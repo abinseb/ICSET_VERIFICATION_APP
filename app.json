@@ -1,0 +1,52 @@
+{
+  "expo": {
+    "plugins": [
+      [
+        "expo-build-properties", 
+        {
+        "android": 
+                {
+                  "usesCleartextTraffic": true
+                }
+        }
+      ]
+    ],
+    "name": "RegApp",
+    "slug": "RegApp",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "permissions": [
+        "android.permission.INTERNET",
+        "android.permission.ACCESS_NETWORK_STATE"
+      ],
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.abinseb.RegApp"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "a3de80b6-971c-4ebe-b0ab-14c38c293988"
+      }
+    }
+  }
+}
