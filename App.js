@@ -21,6 +21,24 @@ import ReceptionBarcodeScan from "./pages/Reception/QRCodeScan";
 import ValidateReception from "./pages/Reception/ValidateReception";
 import InputReception from "./pages/Reception/InputReception"
 
+// lunch
+import LunchScan from "./pages/Lunch/LunchScan";
+import LunchQR from "./pages/Lunch/LunchQR";
+import InputLunch from "./pages/Lunch/InputLunch";
+import ValidateLunch from "./pages/Lunch/ValidateLunch";
+
+// IBM
+import IBMInput from "./pages/IBM/IBMInput";
+import IBMQR from "./pages/IBM/IBMQR";
+import IBMScan from "./pages/IBM/IBMScan"
+import IBMValidate from "./pages/IBM/IBMValidate";
+
+// Google
+import GoogleInput from "./pages/Google/GoogleInput";
+import GoogleScan from "./pages/Google/GoogleScan";
+import GoogleQR from "./pages/Google/GoogleQR";
+import GoogleValidate from "./pages/Google/GoogleValidate";
+
 
 // enable screens 
 enableScreens();
@@ -47,6 +65,30 @@ export default function App() {
           <Stack.Screen name="ReceptionQr" component={ReceptionBarcodeScan} />
           <Stack.Screen name="ValidateReceptionQR" component={ValidateReception} />
           <Stack.Screen name="InputReception" component={InputReception} />
+
+          {/* lunch scan */}
+          <Stack.Screen name="lunchScan" component={LunchScan} />
+          <Stack.Screen name="lunchQr" component={LunchQR} />
+          <Stack.Screen name="lunchInput" component={InputLunch} />
+          <Stack.Screen name="lunchValidate" component={ValidateLunch} />
+
+          {/* ibm */}
+
+          <Stack.Screen name="ibmInput" from component={IBMInput}/>
+          <Stack.Screen name="ibmscan" from component={IBMScan}/>
+          <Stack.Screen name="ibmqr" from component={IBMQR}/>
+          <Stack.Screen name="ibmvalidate" from component={IBMValidate}/>
+
+          {/* google */}
+          <Stack.Screen name="googleInput" from component={GoogleInput}/>
+          <Stack.Screen name="googlescan" from component={GoogleScan}/>
+          <Stack.Screen name="googleqr" from component={GoogleQR}/>
+          <Stack.Screen name="googleValidate" from component={GoogleValidate}/>
+
+
+
+
+
 
           
     </Stack.Navigator>

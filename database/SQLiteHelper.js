@@ -30,7 +30,7 @@ export const Ibm_Registered_table = () => {
     tx.executeSql(
       'CREATE TABLE IF NOT EXISTS ibm_table (Id INTEGER PRIMARY KEY, name TEXT , institution TEXT ,email TEXT , phone TEXT , verify BOOLEAN);',
       [],
-      () => console.log('Table created Successfully'),
+      () => console.log('ibm_Table created Successfully'),
       error => console.error('Error creating table :', error) // Remove the semicolon here
     );
   });
@@ -44,7 +44,7 @@ db.transaction(tx2 =>{
   tx2.executeSql(
     'CREATE TABLE IF NOT EXISTS offline_reception (Id INTEGER);',
     [],
-    ()=> console.log("verified_data table created"),
+    ()=> console.log("offline_reception_verified_data table created"),
     error => console.error('Error :', error)
   );
 });
@@ -55,7 +55,7 @@ export const offline_lunch=()=>{
     tx2.executeSql(
       'CREATE TABLE IF NOT EXISTS offline_lunch (Id INTEGER);',
       [],
-      ()=> console.log("verified_data table created"),
+      ()=> console.log("offlunch_data table created"),
       error => console.error('Error :', error)
     );
   });
@@ -66,7 +66,7 @@ export const offline_lunch=()=>{
       tx2.executeSql(
         'CREATE TABLE IF NOT EXISTS offline_google (Id INTEGER);',
         [],
-        ()=> console.log("verified_data table created"),
+        ()=> console.log("off_google_data table created"),
         error => console.error('Error :', error)
       );
     });
@@ -77,7 +77,7 @@ export const offline_lunch=()=>{
         tx2.executeSql(
           'CREATE TABLE IF NOT EXISTS offline_ibm (Id INTEGER);',
           [],
-          ()=> console.log("verified_data table created"),
+          ()=> console.log("off_ibm_data table created"),
           error => console.error('Error :', error)
         );
       });

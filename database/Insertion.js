@@ -28,14 +28,14 @@ export const insertGoogleTable=(userReg)=>{
     db.transaction(tx=>{
       userReg.forEach(dataItem=> {
             tx.executeSql(
-              'INSERT INTO google_table (id , name , institution, email , phone , verified) VALUES (?,?,?,?,?,?);',
+              'INSERT INTO google_table (id , name , institution, email , phone , verify) VALUES (?,?,?,?,?,?);',
               [
                 dataItem._id,
                 dataItem.name,
                 dataItem.institution,
                 dataItem.email,
                 dataItem.phone,
-                dataItem.verified
+                dataItem.verify
               ],
               (_,{insertId}) => console.log(`Inserted row with Id ${insertId}`),
               error => console.error('Error inserting data: ' , error)
@@ -49,14 +49,14 @@ export const insertIbmTable=(userReg)=>{
     db.transaction(tx=>{
       userReg.forEach(dataItem=> {
             tx.executeSql(
-              'INSERT INTO ibm_table (id , name , institution, email , phone , verified) VALUES (?,?,?,?,?,?);',
+              'INSERT INTO ibm_table (id , name , institution, email , phone , verify) VALUES (?,?,?,?,?,?);',
               [
                 dataItem._id,
                 dataItem.name,
                 dataItem.institution,
                 dataItem.email,
                 dataItem.phone,
-                dataItem.verified
+                dataItem.verify
               ],
               (_,{insertId}) => console.log(`Inserted row with Id ${insertId}`),
               error => console.error('Error inserting data: ' , error)

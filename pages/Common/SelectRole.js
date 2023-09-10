@@ -4,9 +4,9 @@ import { View ,StyleSheet,} from "react-native";
 import { Button } from 'react-native-paper';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useIpContext } from "../IpContext";
-import {insertRegistredUserTable} from "../../database/Insertion";
-import {RegisteredUserTable,Google_Registered_table,Ibm_Registered_table,offlineRegistration} from "../../database/SQLiteHelper";
-import {CheckRegTable} from '../../database/CheckTableSize';
+import {insertRegistredUserTable,insertIbmTable,insertGoogleTable} from "../../database/Insertion";
+ import {RegisteredUserTable,Google_Registered_table,Ibm_Registered_table,offlineRegistration,offline_lunch,offline_ibm,offline_google} from "../../database/SQLiteHelper";
+import {CheckRegTable , CheckIBMTable,CheckGoogleTable} from '../../database/CheckTableSize';
 
 
 const SelectRole =({navigation})=>{
@@ -47,10 +47,104 @@ const Reception_data_load=()=>{
     navigateToReception();
 }
 
+const Lunch_load_Data =()=>{
+    RegisteredUserTable();
+    offline_lunch();
+    var c;
+    console.log("kiiiiiiiiiiii");
+    // table count
+    CheckRegTable()
+  .then(rowCount => {
+    c=rowCount;
+    console.log('reg data count ===', rowCount);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+    axios.get(`http://${ipAddress}/users`)
+    .then((res)=>{
+    //     console.log(res.data)
+    //    setRegData(res.data);
+       if(c === 0){
+       insertRegistredUserTable(res.data);
+        }
+        // navigateToReception();
+
+    })
+    .catch((error)=>{
+        console.error(error);
+       
+    })
+    NavigateToLunch();
+}
 
     const navigateToReception=()=>{
         navigation.navigate("ReceptionScan");
     }
+    const NavigateToLunch=()=>{
+        navigation.navigate("lunchScan");
+    }
+
+    const navigateToIBM =()=>{
+        navigation.navigate("ibmscan");
+    }
+    const navigateToGoogle =()=>{
+        navigation.navigate("googlescan");
+    }
+
+const IBM_data_load=()=>{
+    Ibm_Registered_table();
+    offline_ibm();
+    var c1;
+    CheckIBMTable()
+    .then(rowCount => {
+        c1=rowCount;
+        console.log('reg data count ===', rowCount);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    axios.get(`http://${ipAddress}/ibm`)
+    .then((res)=>{
+        if (c1 === 0)
+        {
+            console.log(res.data);
+            insertIbmTable(res.data);
+        }
+        navigateToIBM();
+    })
+    .catch((error)=>{
+        navigateToIBM();
+    })
+    
+}
+
+const load_google_data=()=>{
+    Google_Registered_table();
+    offline_google();
+    var c2;
+    CheckGoogleTable()
+    .then(rowCount => {
+        c2=rowCount;
+        console.log('reg data count ===', rowCount);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    axios.get(`http://${ipAddress}/google`)
+    .then((res)=>{
+        if (c2 === 0)
+        {
+            console.log(res.data);
+            insertGoogleTable(res.data);
+        }
+        navigateToGoogle();
+    })
+    .catch((error)=>{
+        navigateToGoogle();
+    })
+}
+
     return(
     <SafeAreaView style={styles.container}>
         <View style={styles.bodyContainer}>
@@ -62,17 +156,23 @@ const Reception_data_load=()=>{
             </Button>
             </View>
             <View style={styles.buttonContainer}>
-            <Button style={styles.btn}>
+            <Button style={styles.btn}
+                onPress={Lunch_load_Data}
+            >
                 Lunch
             </Button>
             </View>
             <View style={styles.buttonContainer}>
-            <Button style={styles.btn}>
+            <Button style={styles.btn}
+                onPress={load_google_data}
+            >
                 Google
             </Button>
             </View>
             <View style={styles.buttonContainer}>
-            <Button style={styles.btn}>
+            <Button style={styles.btn} 
+                onPress={IBM_data_load}
+            >
                 IBM
             </Button>
             </View>
