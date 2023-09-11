@@ -34,7 +34,7 @@ useEffect(() => {
 function offlineDataCountReception(){
     db.transaction(tx =>{
       tx.executeSql(
-        'SELECT COUNT(*) AS rowCount FROM offline_reception;',
+        'SELECT COUNT(*) AS rowCount FROM offline_ibm;',
         [],
         (_, { rows }) =>{
           const countData = rows.item(0).rowCount;

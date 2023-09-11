@@ -12,7 +12,7 @@
       ]
     ],
     "name": "RegApp",
-    "slug": "RegApp",
+    "slug": "abinsebastian",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -45,7 +45,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "a3de80b6-971c-4ebe-b0ab-14c38c293988"
+        "projectId": "b49c389b-415f-4f71-93b3-e4fdc858b913"
       }
     }
   }

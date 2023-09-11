@@ -39,6 +39,9 @@ import GoogleScan from "./pages/Google/GoogleScan";
 import GoogleQR from "./pages/Google/GoogleQR";
 import GoogleValidate from "./pages/Google/GoogleValidate";
 
+// college 
+import Collegelist from "./pages/CollegeVerification/CollegeList";
+import CollegeValidate from "./pages/CollegeVerification/CollegeVerification";
 
 // enable screens 
 enableScreens();
@@ -84,6 +87,11 @@ export default function App() {
           <Stack.Screen name="googlescan" from component={GoogleScan}/>
           <Stack.Screen name="googleqr" from component={GoogleQR}/>
           <Stack.Screen name="googleValidate" from component={GoogleValidate}/>
+
+          {/* college */}
+          <Stack.Screen name="collegelist" from component={Collegelist}/>
+          <Stack.Screen name="collegeverified" from component={CollegeValidate} />
+          
 
 
 

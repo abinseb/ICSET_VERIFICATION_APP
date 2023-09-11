@@ -40,7 +40,7 @@ const ValidateReception=({route , navigation})=>{
                 setUserData(res.data);
             })
             .catch((error)=>{
-                console.error("somthing wrong", error);
+                alert("User Not Found");
             })
     
     })
@@ -167,7 +167,7 @@ function offlineDataCountReception(){
   }
 
 const navigateToScan=()=>{
-    navigation.navigate("ReceptionScan",{ refresh: true });
+    navigation.navigate("ReceptionScan");
 }
 
 // avoid the back navigation

@@ -75,7 +75,7 @@ const ValidateLunch=({route , navigation})=>{
 
   const handleVerification=()=>{
     if(network === 'Online'){
-    axios.put(`http://${ipAddress}/users/${lunchqrData}/verify`,{lunch:true})
+    axios.put(`http://${ipAddress}/users/${lunchqrData}/lunch`,{lunch:true})
     .then(()=>{
         alert("Verification Success");
         navigateToScan();
@@ -90,7 +90,7 @@ const ValidateLunch=({route , navigation})=>{
     console.log('load to off');
     db.transaction((tx) => {
       tx.executeSql(
-        `UPDATE registeredUser_table SET verify = ? WHERE Id = ?;`,
+        `UPDATE registeredUser_table SET lunch = ? WHERE Id = ?;`,
         [true, lunchqrData],
         (_, { rowsAffected }) => {
           if (rowsAffected > 0) {
@@ -144,8 +144,8 @@ function offlineDataCountLunch(){
 
           // Using Axios for data synchronization
           const axiosRequests = data.map((dataItem) => {
-            return axios.put(`http://${ipAddress}/users/${dataItem}/verify`, {
-              lunch: true,
+            return axios.put(`http://${ipAddress}/users/${dataItem}/lunch`, {
+              lunch: true
             });
           });
 
@@ -250,7 +250,7 @@ useEffect(()=>{
                       Verify
                   </Button>
                   <Button mode="contained" style={styles.cancelButton} 
-                      onPress={()=>{navigation.navigate("lunchScan")}} 
+                      onPress={navigateToScan} 
                   >
                       Cancel
                   </Button>

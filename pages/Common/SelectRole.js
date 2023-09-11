@@ -91,6 +91,9 @@ const Lunch_load_Data =()=>{
     const navigateToGoogle =()=>{
         navigation.navigate("googlescan");
     }
+const navigateToCollege=()=>{
+    navigation.navigate("collegelist");
+}
 
 const IBM_data_load=()=>{
     Ibm_Registered_table();
@@ -145,6 +148,38 @@ const load_google_data=()=>{
     })
 }
 
+const College_load_data=()=>{
+     RegisteredUserTable();
+    offlineRegistration();
+    var c;
+    console.log("kiiiiiiiiiiii");
+    // table count
+    CheckRegTable()
+  .then(rowCount => {
+    c=rowCount;
+    console.log('reg data count ===', rowCount);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+    axios.get(`http://${ipAddress}/users`)
+    .then((res)=>{
+    //     console.log(res.data)
+    //    setRegData(res.data);
+       if(c === 0){
+       insertRegistredUserTable(res.data);
+        }
+        // navigateToReception();
+
+    })
+    .catch((error)=>{
+        console.error(error);
+       
+    })
+    navigateToCollege();
+
+}
+
     return(
     <SafeAreaView style={styles.container}>
         <View style={styles.bodyContainer}>
@@ -175,6 +210,15 @@ const load_google_data=()=>{
             >
                 IBM
             </Button>
+            
+            </View>
+            <View style={styles.buttonContainer}>
+            <Button style={styles.btn} 
+                onPress={College_load_data}
+            >
+                College
+            </Button>
+            
             </View>
             
         </View>
