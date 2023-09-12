@@ -4,8 +4,6 @@ import { TouchableOpacity } from "react-native";
 import { View,Text ,StyleSheet,} from "react-native";
 import { Button } from 'react-native-paper';
 import { SafeAreaView } from "react-native-safe-area-context";
-
-import {checkConnection} from "../../ServerConnection/Server"
 import { useIpContext } from "../IpContext";
 import axios from "axios";
 
@@ -88,7 +86,7 @@ function offlineDataCountReception(){
   }
 
     const handleNavigate=()=>{
-        navigation.navigate('InputReception');
+        navigation.navigate('mobileReception');
     }
     console.log("loaded")
     return(

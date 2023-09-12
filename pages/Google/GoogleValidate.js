@@ -207,10 +207,7 @@ useEffect(()=>{
                     <Text style={styles.label}>Id: </Text>
                     <Text style={styles.value}>{googleqrdata}</Text>
                 </View>
-                <View style={styles.profileBox}>
-                    <Text style={styles.label}>Ip: </Text>
-                    <Text style={styles.value}>{ipAddress}</Text>
-                </View>
+
                 <View style={styles.profileBox}>
                     <Text style={styles.label}>Name: </Text>
                     <Text style={styles.value}>{userData.name}</Text>
@@ -218,6 +215,10 @@ useEffect(()=>{
                 <View style={styles.profileBox}>
                     <Text style={styles.label}>Email: </Text>
                     <Text style={styles.value}>{userData.email}</Text>
+                </View>
+                <View style={styles.profileBox}>
+                    <Text style={styles.label}>Institution: </Text>
+                    <Text style={styles.value}>{userData.institution}</Text>
                 </View>
                 <View style={styles.profileBox}>
                     <Text style={styles.label}>MobileNo: </Text>

@@ -2,14 +2,68 @@ import * as React from "react";
 import { Box, Text, Heading, VStack, FormControl, Input, Link, Button, HStack, Center, NativeBaseProvider } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
+import axios from "axios";
+import { openDatabase } from "expo-sqlite";
+const db = openDatabase('Registration.db');
+
+
 const InputLunch = () => {
     const navigation =useNavigation();
 
-    const [lunchqrData , setLunchqrData] = useState('');
+    var lunchqrData;
+    const [mobileNumber , setMobileNumber] = useState('');
 
-    const ValidateInputData=()=>{
-        navigation.navigate("lunchValidate",{lunchqrData});
+    const ValidateInputData= async()=>{
+        // navigation.navigate("lunchValidate",{lunchqrData});
+        if (mobileNumber.length === 10) {
+          try {
+            await fetchIdFromServer(); // Wait for the promise to resolve
+            console.log("upppppp", lunchqrData);
+            navigation.navigate("lunchValidate", { lunchqrData });
+          } catch (error) {
+            alert("Something went wrong: " + error.message);
+          }
+        } else {
+          lunchqrData = mobileNumber;
+          navigation.navigate("lunchValidate", { lunchqrData });
+        }
     }
+
+    const fetchIdFromServer = () => {
+      return new Promise((resolve, reject) => {
+        axios
+          .get("http://65.2.137.105:3000/users")
+          .then((res) => {
+            const data = res.data;
+            const fetchId = data.find((student) => student.phone === mobileNumber);
+            if (fetchId) {
+              lunchqrData = fetchId._id;
+              console.log("idddd", fetchId._id);
+              resolve(); // Resolve the promise when data is fetched
+            } else {
+              reject(new Error("ID not found")); // Reject the promise if data is not found
+            }
+          })
+          .catch((error) => {
+            db.transaction((tx) => {
+              tx.executeSql(
+                'SELECT Id FROM registeredUser_table WHERE phone = ?;',
+                [mobileNumber],
+                (_, { rows }) => {
+                  const data = rows._array;
+                  if (data.length > 0) {
+                    lunchqrData = data[0].Id;
+                    console.log("daaaaaa", lunchqrData);
+                    resolve(); // Resolve the promise when data is fetched
+                  } else {
+                    reject(new Error("ID not found")); // Reject the promise if data is not found
+                  }
+                }
+              );
+            });
+          });
+      });
+    };
   return (
     <NativeBaseProvider>
       <Center w="100%">
@@ -18,15 +72,15 @@ const InputLunch = () => {
             Welcome
           </Heading>
           <Heading mt="1" _dark={{ color: "warmGray.200" }} color="coolGray.600" fontWeight="medium" size="xs">
-            Input the Id to continue!
+            Input the Id OR Mobile Number to continue!
           </Heading>
 
           <VStack space={3} mt="5">
             <FormControl>
-              <FormControl.Label>ID</FormControl.Label>
+              <FormControl.Label>ID OR Mobile Number </FormControl.Label>
               <Input 
-                value={lunchqrData}
-                onChangeText={(value)=>{setLunchqrData(value)}}
+                value={mobileNumber}
+                onChangeText={(value)=>{setMobileNumber(value)}}
               />
             </FormControl>
             

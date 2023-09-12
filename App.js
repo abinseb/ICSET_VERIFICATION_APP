@@ -19,7 +19,8 @@ import SelectRole from "./pages/Common/SelectRole";
 import ReceptionScan from "./pages/Reception/ReceptionScan";
 import ReceptionBarcodeScan from "./pages/Reception/QRCodeScan";
 import ValidateReception from "./pages/Reception/ValidateReception";
-import InputReception from "./pages/Reception/InputReception"
+import InputReception from "./pages/Reception/InputReception";
+import MobileValidate from "./pages/Reception/ValidateByMob";
 
 // lunch
 import LunchScan from "./pages/Lunch/LunchScan";
@@ -68,6 +69,7 @@ export default function App() {
           <Stack.Screen name="ReceptionQr" component={ReceptionBarcodeScan} />
           <Stack.Screen name="ValidateReceptionQR" component={ValidateReception} />
           <Stack.Screen name="InputReception" component={InputReception} />
+          <Stack.Screen name="mobileReception" component={MobileValidate} />
 
           {/* lunch scan */}
           <Stack.Screen name="lunchScan" component={LunchScan} />
