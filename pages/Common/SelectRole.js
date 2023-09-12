@@ -162,21 +162,21 @@ const College_load_data=()=>{
   .catch(error => {
     console.error('Error:', error);
   });
-    axios.get(`http://${ipAddress}/users`)
+    axios.get("http://65.2.137.105:3000/users")
     .then((res)=>{
     //     console.log(res.data)
     //    setRegData(res.data);
        if(c === 0){
        insertRegistredUserTable(res.data);
         }
-        // navigateToReception();
+        navigateToCollege();
 
     })
     .catch((error)=>{
-        console.error(error);
+        navigateToCollege(); 
        
     })
-    navigateToCollege();
+   
 
 }
 
