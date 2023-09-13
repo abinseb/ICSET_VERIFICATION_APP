@@ -36,7 +36,7 @@ const GoogleQR = () => {
     }, [googleqrdata]);
 
     const NaviagateToValidate = () => {
-        navigation.navigate('googleValidate');
+        navigation.navigate('googleValidate',{googleqrdata});
     }
 
     const handleNavigate = () => {

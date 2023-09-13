@@ -36,7 +36,7 @@ const IBMQR = () => {
     }, [ibmqrdata]);
 
     const NaviagateToValidate = () => {
-        navigation.navigate('ibmvalidate');
+        navigation.navigate('ibmvalidate',{ibmqrdata});
     }
 
     const handleNavigate = () => {

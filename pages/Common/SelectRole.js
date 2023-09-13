@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { View ,StyleSheet,} from "react-native";
 import { Button } from 'react-native-paper';
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useIpContext } from "../IpContext";
 import {insertRegistredUserTable,insertIbmTable,insertGoogleTable} from "../../database/Insertion";
  import {RegisteredUserTable,Google_Registered_table,Ibm_Registered_table,offlineRegistration,offline_lunch,offline_ibm,offline_google} from "../../database/SQLiteHelper";
 import {CheckRegTable , CheckIBMTable,CheckGoogleTable} from '../../database/CheckTableSize';
@@ -11,8 +10,6 @@ import {CheckRegTable , CheckIBMTable,CheckGoogleTable} from '../../database/Che
 
 const SelectRole =({navigation})=>{
 
-    const [regData , setRegData] = useState([])
-    const {ipAddress} = useIpContext();
 
 const Reception_data_load=()=>{
     
@@ -30,7 +27,7 @@ const Reception_data_load=()=>{
   .catch(error => {
     console.error('Error:', error);
   });
-    axios.get(`http://${ipAddress}/users`)
+    axios.get(`http://65.2.137.105:3000/users`)
     .then((res)=>{
     //     console.log(res.data)
     //    setRegData(res.data);
@@ -61,7 +58,7 @@ const Lunch_load_Data =()=>{
   .catch(error => {
     console.error('Error:', error);
   });
-    axios.get(`http://${ipAddress}/users`)
+    axios.get(`http://65.2.137.105:3000/users`)
     .then((res)=>{
     //     console.log(res.data)
     //    setRegData(res.data);
@@ -107,7 +104,7 @@ const IBM_data_load=()=>{
       .catch(error => {
         console.error('Error:', error);
       });
-    axios.get(`http://${ipAddress}/ibm`)
+    axios.get(`http://65.2.137.105:3000/ibm`)
     .then((res)=>{
         if (c1 === 0)
         {
@@ -134,7 +131,7 @@ const load_google_data=()=>{
       .catch(error => {
         console.error('Error:', error);
       });
-    axios.get(`http://${ipAddress}/google`)
+    axios.get(`http://65.2.137.105:3000/google`)
     .then((res)=>{
         if (c2 === 0)
         {

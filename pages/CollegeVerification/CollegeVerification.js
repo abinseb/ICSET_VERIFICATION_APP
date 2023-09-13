@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import { View, Text, StyleSheet, FlatList ,ScrollView} from "react-native";
 import { Button, Checkbox as PaperCheckbox } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import axios from 'axios';
@@ -74,16 +74,17 @@ const CollegeValidate = ({ route, navigation }) => {
 
     // Render each item in the FlatList
     const renderItem = ({ item }) => (
-       
-        <View style={styles.checkboxContainer}>
-            <PaperCheckbox.Item
-                label={item.name}
-                status={item.checked ? 'checked' : 'unchecked'}
-                onPress={() => toggleCheckbox(item._id)}
-                
-
-            />
-        </View>
+      <View  style={styles.itemContainer}>
+        <PaperCheckbox.Item
+          status={item.checked ? 'checked' : 'unchecked'}
+          onPress={() => toggleCheckbox(item._id)}
+        />
+        <ScrollView>
+          <Text>{item.name}</Text>
+          <Text>{item.email}</Text>
+          <Text>{item.phone}</Text>
+        </ScrollView>
+      </View>
     );
 
     
@@ -258,7 +259,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: "center",
         borderRadius: 20,
-        elevation: 2,
+        elevation: 1,
         padding: 20,
         backgroundColor: "white",
         width: '90%',
@@ -268,8 +269,8 @@ const styles = StyleSheet.create({
     },
     FlatlistData: {
         padding: 10,
-        width: '80%',
-        alignSelf: 'center',
+        width: '100%',
+        alignSelf: 'flex-start',
         backgroundColor: "white",
     },
     verifyButton: {
@@ -286,5 +287,13 @@ const styles = StyleSheet.create({
     },
     collegeText: {
         fontWeight: '700',
-    }
+    },
+    itemContainer: {
+      flexDirection: 'row', // To align checkbox, name, and email horizontally
+      // alignItems: 'center', // To vertically center the checkbox and text
+      marginVertical: 8, // Adjust this for spacing between items
+    },
+    textContainer: {
+      marginLeft: 16, // Adjust this for spacing between checkbox and text
+    },
 });

@@ -4,24 +4,19 @@ import { TouchableOpacity } from "react-native";
 import { View,Text ,StyleSheet,} from "react-native";
 import { Button } from 'react-native-paper';
 import { SafeAreaView } from "react-native-safe-area-context";
-
-import { useIpContext } from "../IpContext";
 import axios from "axios";
 
-import {deleteOfflineReg} from "../../database/Updatadb"
 
 import { openDatabase } from "expo-sqlite";
 const db = openDatabase('Registration.db');
 
 const GoogleScan =({navigation})=>{
-
-    const {ipAddress} = useIpContext();
     const [status , setStatus] = useState('');
     const [offlinCount , setOfflineCount] = useState('');
 
 useEffect(() => {
     offlineDataCountGoogle();
-    axios.get(`http://${ipAddress}`)
+    axios.get(`http://65.2.137.105:3000`)
     .then(()=>{
         setStatus("Online");
        
@@ -62,15 +57,6 @@ function offlineDataCountGoogle(){
               <View style={styles.ViewCount}>
                 <Text style={styles.networkText}>Offline Verified Count :{offlinCount}</Text>
               </View>
-            {status === 'Offline' &&(
-            <View style={styles.synButtonView}>
-              <Button mode="contained" style={styles.synButton} textColor='#000'
-                      onPress={()=>{navigation.navigate("serverConnection")}} 
-                  >
-                      Connect
-                  </Button>
-              </View>
-              )}
            
             <View style={styles.btnContainer}>
               <Button mode="contained" textColor="black" style={styles.btn}

@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet,BackHandler} from "react-native";
 import { Button } from "react-native-paper";
-
-import { useIpContext } from "../IpContext";
 import { SafeAreaView } from "react-native-safe-area-context";
 import axios from "axios";
-import {checkServerStatus,getUserById,verifyUsersById} from "../../ServerConnection/Server"
-
 import {deleteOfflineGoogle} from "../../database/Updatadb"
 import { openDatabase } from "expo-sqlite";
 import {insertOfflineGoogle} from "../../database/Insertion";
@@ -16,7 +12,6 @@ const db = openDatabase('Registration.db');
 
 const GoogleValidate =({route , navigation})=>{
     const {googleqrdata} = route.params;
-    const {ipAddress} = useIpContext();
     const [network , setNetwork] = useState('');
     const [userData , setUserData ] = useState([])
 
@@ -27,21 +22,21 @@ const GoogleValidate =({route , navigation})=>{
   useEffect(()=>{
     console.log(googleqrdata);
     offlineDataCountgoogle();
-    axios.get(`http://${ipAddress}`)
+    axios.get(`http://65.2.137.105:3000`)
     .then(()=>{
         setNetwork("Online");
         // console.log( getUserById(ipAddress,ReceptionqrData));
             if(c > 0){
                 syncOffline_dataToMongo();
             }
-            axios.get(`http://${ipAddress}/google/${googleqrdata}`)
+            axios.get(`http://65.2.137.105:3000/google/${googleqrdata}`)
             .then((res)=>{
                 console.log(res.data);
             
                 setUserData(res.data);
             })
             .catch((error)=>{
-                console.error("somthing wrong", error);
+                alert("User Not Found");
             })
     
     })
@@ -59,6 +54,9 @@ const GoogleValidate =({route , navigation})=>{
                         setUserData(data[0]);
                         console.log(data);
                     }
+                    else{
+                      alert("User Not Found");
+                    }
                 }
             )
         })
@@ -69,7 +67,7 @@ const GoogleValidate =({route , navigation})=>{
 
   const handleVerification=()=>{
     if(network === 'Online'){
-    axios.put(`http://${ipAddress}/google/${googleqrdata}/verify`,{verify:true})
+    axios.put(`http://65.2.137.105:3000/google/${googleqrdata}/verify`,{verify:true})
     .then(()=>{
         alert("Verification Success");
         navigateToScan();
@@ -138,7 +136,7 @@ function offlineDataCountgoogle(){
 
           // Using Axios for data synchronization
           const axiosRequests = data.map((dataItem) => {
-            return axios.put(`http://${ipAddress}/google/${dataItem}/verify`, {
+            return axios.put(`http://65.2.137.105:3000/google/${dataItem}/verify`, {
               verify: true,
             });
           });

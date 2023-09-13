@@ -4,7 +4,6 @@ import { TouchableOpacity } from "react-native";
 import { View,Text ,StyleSheet,} from "react-native";
 import { Button } from 'react-native-paper';
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useIpContext } from "../IpContext";
 import axios from "axios";
 
 import {deleteOfflineReg} from "../../database/Updatadb"
@@ -13,14 +12,12 @@ import { openDatabase } from "expo-sqlite";
 const db = openDatabase('Registration.db');
 
 const ReceptionScan =({navigation})=>{
-
-    const {ipAddress} = useIpContext();
     const [status , setStatus] = useState('');
     const [offlinCount , setOfflineCount] = useState('');
 
 useEffect(() => {
     offlineDataCountReception();
-    axios.get(`http://${ipAddress}`)
+    axios.get(`http://65.2.137.105:3000`)
     .then(()=>{
         setStatus("Online");
        
@@ -62,7 +59,7 @@ function offlineDataCountReception(){
 
           // Using Axios for data synchronization
           const axiosRequests = data.map((dataItem) => {
-            return axios.put(`http://${ipAddress}/users/${dataItem}/verify`, {
+            return axios.put(`http://65.2.137.105:3000/users/${dataItem}/verify`, {
               verify: true,
             });
           });
@@ -97,15 +94,15 @@ function offlineDataCountReception(){
               <View style={styles.ViewCount}>
                 <Text style={styles.networkText}>Offline Verified Count :{offlinCount}</Text>
               </View>
-            {status === 'Offline' &&(
+            {/* {status === 'Online' &&(
             <View style={styles.synButtonView}>
               <Button mode="contained" style={styles.synButton} textColor='#000'
-                      onPress={()=>{navigation.navigate("serverConnection")}} 
+                      onPress={syncOffline_dataToMongo} 
                   >
-                      Connect
+                      Sync
                   </Button>
               </View>
-              )}
+              )} */}
            
             <View style={styles.btnContainer}>
               <Button mode="contained" textColor="black" style={styles.btn}

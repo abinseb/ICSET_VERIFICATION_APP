@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet,BackHandler} from "react-native";
 import { Button } from "react-native-paper";
 
-import { useIpContext } from "../IpContext";
 import { SafeAreaView } from "react-native-safe-area-context";
 import axios from "axios";
-import {checkServerStatus,getUserById,verifyUsersById} from "../../ServerConnection/Server"
+
 
 import {deleteOfflineIbm} from "../../database/Updatadb"
 import { openDatabase } from "expo-sqlite";
@@ -16,7 +15,6 @@ const db = openDatabase('Registration.db');
 
 const IBMValidate =({route , navigation})=>{
     const {ibmqrdata} = route.params;
-    const {ipAddress} = useIpContext();
     const [network , setNetwork] = useState('');
     const [userData , setUserData ] = useState([])
 
@@ -27,21 +25,21 @@ const IBMValidate =({route , navigation})=>{
   useEffect(()=>{
     console.log(ibmqrdata);
     offlineDataCountIBM();
-    axios.get(`http://${ipAddress}`)
+    axios.get(`http://65.2.137.105:3000`)
     .then(()=>{
         setNetwork("Online");
         // console.log( getUserById(ipAddress,ReceptionqrData));
             if(c > 0){
                 syncOffline_dataToMongo();
             }
-            axios.get(`http://${ipAddress}/ibm/${ibmqrdata}`)
+            axios.get(`http://65.2.137.105:3000/ibm/${ibmqrdata}`)
             .then((res)=>{
                 console.log(res.data);
             
                 setUserData(res.data);
             })
             .catch((error)=>{
-                console.error("somthing wrong", error);
+                alert("User Not Found");
             })
     
     })
@@ -59,6 +57,9 @@ const IBMValidate =({route , navigation})=>{
                         setUserData(data[0]);
                         console.log(data);
                     }
+                    else{
+                      alert("User Not Found");
+                    }
                 }
             )
         })
@@ -75,7 +76,7 @@ const IBMValidate =({route , navigation})=>{
 
   const handleVerification=()=>{
     if(network === 'Online'){
-    axios.put(`http://${ipAddress}/ibm/${ibmqrdata}/verify`,{verify:true})
+    axios.put(`http://65.2.137.105:3000/ibm/${ibmqrdata}/verify`,{verify:true})
     .then(()=>{
         alert("Verification Success");
         navigateToScan();
@@ -144,7 +145,7 @@ function offlineDataCountIBM(){
 
           // Using Axios for data synchronization
           const axiosRequests = data.map((dataItem) => {
-            return axios.put(`http://${ipAddress}/ibm/${dataItem}/verify`, {
+            return axios.put(`http://65.2.137.105:3000/ibm/${dataItem}/verify`, {
               verify: true,
             });
           });

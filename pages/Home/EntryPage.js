@@ -46,10 +46,18 @@ const StartPage=({navigation})=>{
 
     return(
         <SafeAreaView style={styles.container}>
+            <View style={styles.imageContainer}>
+                <Image 
+                    source={require('../../assets/images.png')}
+                    style={styles.img}
+                    resizeMode='contain'
+                />
+
+            </View>
             <View style={styles.connectButtonContainer}> 
               <Button mode="contained" textColor="black" style={styles.btn}
-                onPress={()=>{navigation.navigate("serverConnection")}}
-              >Connect</Button>
+                onPress={()=>{navigation.navigate("selectRole")}}
+              >Start</Button>
             </View>
             
         </SafeAreaView>
@@ -66,13 +74,23 @@ const styles = StyleSheet.create({
         },
     connectButtonContainer:{
         alignSelf:'center',
+        margin:30,
     },
     btn:{
         backgroundColor:'#f0f8ff',
         height:50,
-        width:250,
+        width:130,
         justifyContent:'center',
         borderRadius:10,
         alignItems:'center',
+    },
+    imageContainer:{
+        flex:0.4,
+        margin:10,
+
+    },
+    img:{
+        height:'100%',
+        width:'100%'
     },
 })

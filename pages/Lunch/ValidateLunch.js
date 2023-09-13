@@ -2,10 +2,8 @@ import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet,BackHandler} from "react-native";
 import { Button } from "react-native-paper";
 
-import { useIpContext } from "../IpContext";
 import { SafeAreaView } from "react-native-safe-area-context";
 import axios from "axios";
-import {checkServerStatus,getUserById,verifyUsersById} from "../../ServerConnection/Server"
 
 import {deleteOfflineLunch} from "../../database/Updatadb"
 import { openDatabase } from "expo-sqlite";
@@ -16,7 +14,6 @@ const db = openDatabase('Registration.db');
 
 const ValidateLunch=({route , navigation})=>{
     const {lunchqrData} = route.params;
-    const {ipAddress} = useIpContext();
     const [network , setNetwork] = useState('');
     const [userData , setUserData ] = useState([])
 
@@ -26,14 +23,14 @@ const ValidateLunch=({route , navigation})=>{
 
   useEffect(()=>{
     offlineDataCountLunch();
-    axios.get(`http://${ipAddress}`)
+    axios.get(`http://65.2.137.105:3000`)
     .then(()=>{
         setNetwork("Online");
         // console.log( getUserById(ipAddress,ReceptionqrData));
             if(c > 0){
                 syncOffline_dataToMongo();
             }
-            axios.get(`http://${ipAddress}/user/${lunchqrData}`)
+            axios.get(`http://65.2.137.105:3000/user/${lunchqrData}`)
             .then((res)=>{
                 console.log(res.data);
             
@@ -75,7 +72,7 @@ const ValidateLunch=({route , navigation})=>{
 
   const handleVerification=()=>{
     if(network === 'Online'){
-    axios.put(`http://${ipAddress}/users/${lunchqrData}/lunch`,{lunch:true})
+    axios.put(`http://65.2.137.105:3000/users/${lunchqrData}/lunch`,{lunch:true})
     .then(()=>{
         alert("Verification Success");
         navigateToScan();
@@ -144,7 +141,7 @@ function offlineDataCountLunch(){
 
           // Using Axios for data synchronization
           const axiosRequests = data.map((dataItem) => {
-            return axios.put(`http://${ipAddress}/users/${dataItem}/lunch`, {
+            return axios.put(`http://65.2.137.105:3000/users/${dataItem}/lunch`, {
               lunch: true
             });
           });

@@ -2,14 +2,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { enableScreens } from "react-native-screens";
 // import components
-import Home from "./pages/Home";
-import Scan from './pages/ReadQR/Scan';
-import ValidateQR from "./pages/ValidateQR/ValidateQR";
-import InputDataManualy from "./pages/ReadQR/InputData";
-import ConnectServer from "./pages/ConnectServer/Connection";
 
-// ipProvider
-import { IPProvider } from "./pages/IpContext";
 
 // entering page
 import StartPage from "./pages/Home/EntryPage";
@@ -51,23 +44,18 @@ export default function App() {
   const Stack = createNativeStackNavigator();
 
   return (
-    <IPProvider>
+   
     <NavigationContainer>
         <Stack.Navigator
           initialRouteName="EntryHome"
         >
           <Stack.Screen name="EntryHome" component={StartPage} options={{headerShown:false}}/>
-          <Stack.Screen name="Home" component={Home} options={{headerShown:false}} />
-          {/* <Stack.Screen name="Scan" component={Scan} /> */}
-          {/* <Stack.Screen name="ValidateQR" component={ValidateQR} options={{headerShown:false}}/> */}
-          <Stack.Screen name="Input" component={InputDataManualy} />
-          <Stack.Screen name="serverConnection" component={ConnectServer} />
           <Stack.Screen name="selectRole" component={SelectRole} options={{headerShown:false}} />
 
           {/* Reception */}
           <Stack.Screen name="ReceptionScan" component={ReceptionScan} />
           <Stack.Screen name="ReceptionQr" component={ReceptionBarcodeScan} />
-          <Stack.Screen name="ValidateReceptionQR" component={ValidateReception} />
+          <Stack.Screen name="ValidateReceptionQR" component={ValidateReception} options={{headerShown:false}}/>
           <Stack.Screen name="InputReception" component={InputReception} />
           <Stack.Screen name="mobileReception" component={MobileValidate} />
 
@@ -75,20 +63,20 @@ export default function App() {
           <Stack.Screen name="lunchScan" component={LunchScan} />
           <Stack.Screen name="lunchQr" component={LunchQR} />
           <Stack.Screen name="lunchInput" component={InputLunch} />
-          <Stack.Screen name="lunchValidate" component={ValidateLunch} />
+          <Stack.Screen name="lunchValidate" component={ValidateLunch} options={{headerShown:false}}/>
 
           {/* ibm */}
 
           <Stack.Screen name="ibmInput" from component={IBMInput}/>
           <Stack.Screen name="ibmscan" from component={IBMScan}/>
           <Stack.Screen name="ibmqr" from component={IBMQR}/>
-          <Stack.Screen name="ibmvalidate" from component={IBMValidate}/>
+          <Stack.Screen name="ibmvalidate" from component={IBMValidate} options={{headerShown:false}}/>
 
           {/* google */}
           <Stack.Screen name="googleInput" from component={GoogleInput}/>
           <Stack.Screen name="googlescan" from component={GoogleScan}/>
           <Stack.Screen name="googleqr" from component={GoogleQR}/>
-          <Stack.Screen name="googleValidate" from component={GoogleValidate}/>
+          <Stack.Screen name="googleValidate" from component={GoogleValidate} options={{headerShown:false}}/>
 
           {/* college */}
           <Stack.Screen name="collegelist" from component={Collegelist}/>
@@ -103,7 +91,7 @@ export default function App() {
           
     </Stack.Navigator>
     </NavigationContainer>
-    </IPProvider>
+   
     
   );
 }
