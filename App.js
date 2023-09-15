@@ -3,7 +3,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { enableScreens } from "react-native-screens";
 // import components
 
-
 // entering page
 import StartPage from "./pages/Home/EntryPage";
 import SelectRole from "./pages/Common/SelectRole";
@@ -14,12 +13,6 @@ import ReceptionBarcodeScan from "./pages/Reception/QRCodeScan";
 import ValidateReception from "./pages/Reception/ValidateReception";
 import InputReception from "./pages/Reception/InputReception";
 import MobileValidate from "./pages/Reception/ValidateByMob";
-
-// lunch
-import LunchScan from "./pages/Lunch/LunchScan";
-import LunchQR from "./pages/Lunch/LunchQR";
-import InputLunch from "./pages/Lunch/InputLunch";
-import ValidateLunch from "./pages/Lunch/ValidateLunch";
 
 // IBM
 import IBMInput from "./pages/IBM/IBMInput";
@@ -36,12 +29,25 @@ import GoogleValidate from "./pages/Google/GoogleValidate";
 // college 
 import Collegelist from "./pages/CollegeVerification/CollegeList";
 import CollegeValidate from "./pages/CollegeVerification/CollegeVerification";
+import VerifiedStudentList from "./pages/CollegeVerification/PresentStudentList";
+import AbsentStudentList from "./pages/CollegeVerification/CollegeAbsentList";
+
+// import tables
+import {RegisteredUserTable,Google_Registered_table,Ibm_Registered_table,offlineRegistration} from "./database/SQLiteHelper";
+import { useEffect } from "react";
 
 // enable screens 
 enableScreens();
 
 export default function App() {
   const Stack = createNativeStackNavigator();
+
+  useEffect(()=>{
+    RegisteredUserTable();
+    offlineRegistration();
+    Google_Registered_table();
+    Ibm_Registered_table();
+  },[])
 
   return (
    
@@ -59,11 +65,7 @@ export default function App() {
           <Stack.Screen name="InputReception" component={InputReception} />
           <Stack.Screen name="mobileReception" component={MobileValidate} />
 
-          {/* lunch scan */}
-          <Stack.Screen name="lunchScan" component={LunchScan} />
-          <Stack.Screen name="lunchQr" component={LunchQR} />
-          <Stack.Screen name="lunchInput" component={InputLunch} />
-          <Stack.Screen name="lunchValidate" component={ValidateLunch} options={{headerShown:false}}/>
+          
 
           {/* ibm */}
 
@@ -81,14 +83,9 @@ export default function App() {
           {/* college */}
           <Stack.Screen name="collegelist" from component={Collegelist}/>
           <Stack.Screen name="collegeverified" from component={CollegeValidate} />
-          
-
-
-
-
-
-
-          
+          <Stack.Screen name="presentStudent" from component={VerifiedStudentList} />
+          <Stack.Screen name="absentStudent" from component={AbsentStudentList} />
+           
     </Stack.Navigator>
     </NavigationContainer>
    

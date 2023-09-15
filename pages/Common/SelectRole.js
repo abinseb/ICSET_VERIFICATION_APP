@@ -3,83 +3,20 @@ import React, { useState } from "react";
 import { View ,StyleSheet,} from "react-native";
 import { Button } from 'react-native-paper';
 import { SafeAreaView } from "react-native-safe-area-context";
-import {insertRegistredUserTable,insertIbmTable,insertGoogleTable} from "../../database/Insertion";
- import {RegisteredUserTable,Google_Registered_table,Ibm_Registered_table,offlineRegistration,offline_lunch,offline_ibm,offline_google} from "../../database/SQLiteHelper";
-import {CheckRegTable , CheckIBMTable,CheckGoogleTable} from '../../database/CheckTableSize';
+import {insertIbmTable,insertGoogleTable} from "../../database/Insertion";
+ import {Google_Registered_table,Ibm_Registered_table,offline_ibm,offline_google} from "../../database/SQLiteHelper";
+import { CheckIBMTable,CheckGoogleTable} from '../../database/CheckTableSize';
 
 
 const SelectRole =({navigation})=>{
 
 
 const Reception_data_load=()=>{
-    
-
-    RegisteredUserTable();
-    offlineRegistration();
-    var c;
-    console.log("kiiiiiiiiiiii");
-    // table count
-    CheckRegTable()
-  .then(rowCount => {
-    c=rowCount;
-    console.log('reg data count ===', rowCount);
-  })
-  .catch(error => {
-    console.error('Error:', error);
-  });
-    axios.get(`http://65.2.137.105:3000/users`)
-    .then((res)=>{
-    //     console.log(res.data)
-    //    setRegData(res.data);
-       if(c === 0){
-       insertRegistredUserTable(res.data);
-        }
-        // navigateToReception();
-
-    })
-    .catch((error)=>{
-        console.error(error);
-       
-    })
     navigateToReception();
-}
-
-const Lunch_load_Data =()=>{
-    RegisteredUserTable();
-    offline_lunch();
-    var c;
-    console.log("kiiiiiiiiiiii");
-    // table count
-    CheckRegTable()
-  .then(rowCount => {
-    c=rowCount;
-    console.log('reg data count ===', rowCount);
-  })
-  .catch(error => {
-    console.error('Error:', error);
-  });
-    axios.get(`http://65.2.137.105:3000/users`)
-    .then((res)=>{
-    //     console.log(res.data)
-    //    setRegData(res.data);
-       if(c === 0){
-       insertRegistredUserTable(res.data);
-        }
-        // navigateToReception();
-
-    })
-    .catch((error)=>{
-        console.error(error);
-       
-    })
-    NavigateToLunch();
 }
 
     const navigateToReception=()=>{
         navigation.navigate("ReceptionScan");
-    }
-    const NavigateToLunch=()=>{
-        navigation.navigate("lunchScan");
     }
 
     const navigateToIBM =()=>{
@@ -111,11 +48,11 @@ const IBM_data_load=()=>{
             console.log(res.data);
             insertIbmTable(res.data);
         }
-        navigateToIBM();
     })
     .catch((error)=>{
-        navigateToIBM();
+        console.log(error);
     })
+    navigateToIBM();
     
 }
 
@@ -138,41 +75,18 @@ const load_google_data=()=>{
             console.log(res.data);
             insertGoogleTable(res.data);
         }
-        navigateToGoogle();
+        // navigateToGoogle();
     })
     .catch((error)=>{
-        navigateToGoogle();
+        // navigateToGoogle();
+        console.log(error);
     })
+    navigateToGoogle();
 }
 
 const College_load_data=()=>{
-     RegisteredUserTable();
-    offlineRegistration();
-    var c;
-    console.log("kiiiiiiiiiiii");
-    // table count
-    CheckRegTable()
-  .then(rowCount => {
-    c=rowCount;
-    console.log('reg data count ===', rowCount);
-  })
-  .catch(error => {
-    console.error('Error:', error);
-  });
-    axios.get("http://65.2.137.105:3000/users")
-    .then((res)=>{
-    //     console.log(res.data)
-    //    setRegData(res.data);
-       if(c === 0){
-       insertRegistredUserTable(res.data);
-        }
-        navigateToCollege();
-
-    })
-    .catch((error)=>{
-        navigateToCollege(); 
-       
-    })
+     
+    navigateToCollege();
    
 
 }
@@ -185,13 +99,6 @@ const College_load_data=()=>{
                 onPress={Reception_data_load}
             >
                 Reception
-            </Button>
-            </View>
-            <View style={styles.buttonContainer}>
-            <Button style={styles.btn}
-                onPress={Lunch_load_Data}
-            >
-                Lunch
             </Button>
             </View>
             <View style={styles.buttonContainer}>
@@ -213,7 +120,7 @@ const College_load_data=()=>{
             <Button style={styles.btn} 
                 onPress={College_load_data}
             >
-                College
+                Bulk Registration
             </Button>
             
             </View>

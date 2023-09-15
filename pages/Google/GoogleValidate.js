@@ -36,7 +36,7 @@ const GoogleValidate =({route , navigation})=>{
                 setUserData(res.data);
             })
             .catch((error)=>{
-                alert("User Not Found");
+                alert("User Not Registered");
             })
     
     })
@@ -55,7 +55,7 @@ const GoogleValidate =({route , navigation})=>{
                         console.log(data);
                     }
                     else{
-                      alert("User Not Found");
+                      alert("User Not Registered");
                     }
                 }
             )
@@ -215,7 +215,7 @@ useEffect(()=>{
                     <Text style={styles.value}>{userData.email}</Text>
                 </View>
                 <View style={styles.profileBox}>
-                    <Text style={styles.label}>Institution: </Text>
+                    <Text style={styles.label}>College: </Text>
                     <Text style={styles.value}>{userData.institution}</Text>
                 </View>
                 <View style={styles.profileBox}>
@@ -243,7 +243,7 @@ useEffect(()=>{
                       Verify
                   </Button>
                   <Button mode="contained" style={styles.cancelButton} 
-                      onPress={()=>{navigation.navigate("ibmscan")}} 
+                      onPress={()=>{navigation.navigate("googlescan")}} 
                   >
                       Cancel
                   </Button>

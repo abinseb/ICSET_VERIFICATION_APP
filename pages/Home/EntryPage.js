@@ -4,7 +4,9 @@ import { View,Text ,StyleSheet, Image,BackHandler,Alert} from "react-native";
 import { Button } from 'react-native-paper';
 import { SafeAreaView } from "react-native-safe-area-context";
 import {RegisteredUserTable,Google_Registered_table,Ibm_Registered_table,offlineRegistration} from "../../database/SQLiteHelper";
-
+import {insertRegistredUserTable,insertIbmTable,insertGoogleTable} from "../../database/Insertion";
+import {CheckRegTable , CheckIBMTable,CheckGoogleTable} from '../../database/CheckTableSize';
+import axios from "axios";
 const StartPage=({navigation})=>{
 
     // avoid backnavigation
@@ -44,6 +46,41 @@ const StartPage=({navigation})=>{
 
 
 
+
+const load_All_Data_And_Navigate=()=>{
+    var c;
+    console.log("kiiiiiiiiiiii");
+    // table count
+    CheckRegTable()
+  .then(rowCount => {
+    c=rowCount;
+    console.log('reg data count ===', rowCount);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+    axios.get(`http://65.2.137.105:3000/users`)
+    .then((res)=>{
+        // console.log(res.data);
+    //    setRegData(res.data);
+       if(c === 0){
+       insertRegistredUserTable(res.data);
+        }
+        // navigateToReception();
+
+    })
+    .catch((error)=>{
+        console.error(error);
+       
+    })
+    navigateToSelect();
+}
+
+const navigateToSelect=()=>{
+    navigation.navigate("selectRole")
+}
+
+
     return(
         <SafeAreaView style={styles.container}>
             <View style={styles.imageContainer}>
@@ -56,7 +93,7 @@ const StartPage=({navigation})=>{
             </View>
             <View style={styles.connectButtonContainer}> 
               <Button mode="contained" textColor="black" style={styles.btn}
-                onPress={()=>{navigation.navigate("selectRole")}}
+                onPress={load_All_Data_And_Navigate}
               >Start</Button>
             </View>
             

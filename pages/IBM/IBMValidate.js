@@ -39,7 +39,7 @@ const IBMValidate =({route , navigation})=>{
                 setUserData(res.data);
             })
             .catch((error)=>{
-                alert("User Not Found");
+                alert("User  Not Registered");
             })
     
     })
@@ -58,7 +58,7 @@ const IBMValidate =({route , navigation})=>{
                         console.log(data);
                     }
                     else{
-                      alert("User Not Found");
+                      alert("User Not Registered");
                     }
                 }
             )

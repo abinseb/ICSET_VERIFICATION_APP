@@ -6,9 +6,9 @@ const db = openDatabase('Registration.db');
 export const RegisteredUserTable = () => {
   db.transaction(tx => {
     tx.executeSql(
-      'CREATE TABLE IF NOT EXISTS registeredUser_table (Id INTEGER PRIMARY KEY, name TEXT , institution TEXT ,email TEXT , phone TEXT , verify BOOLEAN , lunch BOOLEAN);',
+      'CREATE TABLE IF NOT EXISTS registeredUser_table (Id INTEGER PRIMARY KEY, name TEXT , institution TEXT ,email TEXT , phone TEXT , verify BOOLEAN , lunch BOOLEAN,timeStamp DATETIME);',
       [],
-      () => console.log('Table created Successfully'),
+      () => console.log('RegTable created Successfully'),
       error => console.error('Error creating table :', error) // Remove the semicolon here
     );
   });
@@ -17,7 +17,7 @@ export const RegisteredUserTable = () => {
 export const Google_Registered_table = () => {
   db.transaction(tx => {
     tx.executeSql(
-      'CREATE TABLE IF NOT EXISTS google_table  (Id INTEGER PRIMARY KEY, name TEXT , institution TEXT ,email TEXT , phone TEXT , verify BOOLEAN);',
+      'CREATE TABLE IF NOT EXISTS google_table  (Id INTEGER PRIMARY KEY, name TEXT , institution TEXT ,email TEXT , phone TEXT , verify BOOLEAN );',
       [],
       () => console.log('Table created Successfully'),
       error => console.error('Error creating table :', error) // Remove the semicolon here
