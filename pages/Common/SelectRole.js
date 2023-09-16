@@ -1,12 +1,12 @@
 import axios from "axios";
-import React, { useState } from "react";
-import { View ,StyleSheet,} from "react-native";
+import React, { useState ,useEffect} from "react";
+import { View ,StyleSheet,BackHandler,Alert, TouchableOpacity} from "react-native";
 import { Button } from 'react-native-paper';
 import { SafeAreaView } from "react-native-safe-area-context";
 import {insertIbmTable,insertGoogleTable} from "../../database/Insertion";
  import {Google_Registered_table,Ibm_Registered_table,offline_ibm,offline_google} from "../../database/SQLiteHelper";
 import { CheckIBMTable,CheckGoogleTable} from '../../database/CheckTableSize';
-
+import { deleteLogin } from "../../database/Updatadb";
 
 const SelectRole =({navigation})=>{
 
@@ -41,7 +41,7 @@ const IBM_data_load=()=>{
       .catch(error => {
         console.error('Error:', error);
       });
-    axios.get(`http://65.2.137.105:3000/ibm`)
+    axios.get(`http://icset2023.ictkerala.com/ibm`)
     .then((res)=>{
         if (c1 === 0)
         {
@@ -68,7 +68,7 @@ const load_google_data=()=>{
       .catch(error => {
         console.error('Error:', error);
       });
-    axios.get(`http://65.2.137.105:3000/google`)
+    axios.get(`http://icset2023.ictkerala.com/google`)
     .then((res)=>{
         if (c2 === 0)
         {
@@ -91,37 +91,94 @@ const College_load_data=()=>{
 
 }
 
+  // avoid backnavigation
+  const handleBacknavigation=()=>{
+    Alert.alert(
+        "Exit App",
+        "Do you want to exit?",
+        [
+            {
+                text:"No",
+                onPress:()=>{
+                    navigation.navigate("selectRole");
+                },
+                style:"cancel"
+            },
+            {
+                text:"Yes",
+                onPress:()=>{
+                    BackHandler.exitApp();
+                }
+            }
+        ],
+        {cancelable:false}
+    );
+    return true;
+};
+
+useEffect(()=>{
+    const backHandler = BackHandler.addEventListener(
+        "hardwareBackPress",
+        handleBacknavigation
+    );
+    return ()=>{
+        backHandler.remove();
+    }
+},[navigation]);
+
+const logout_user=()=>{
+    deleteLogin();
+
+    navigateToEnty();
+
+}
+
+const navigateToEnty=()=>{
+    navigation.navigate("EntryHome");
+}
+
+
     return(
     <SafeAreaView style={styles.container}>
+        <View style={styles.logoutView}>
+        <Button mode="contained" style={styles.btnlogout} onPress={logout_user}>
+                Logout
+        </Button>
+        </View>
         <View style={styles.bodyContainer}>
             <View style={styles.buttonContainer}>
-            <Button style={styles.btn}
-                onPress={Reception_data_load}
-            >
-                Reception
-            </Button>
+            <TouchableOpacity  onPress={Reception_data_load}>
+                <Button style={styles.btn}
+                   
+                >
+                    Reception
+                </Button>
+            </TouchableOpacity>
             </View>
             <View style={styles.buttonContainer}>
-            <Button style={styles.btn}
-                onPress={load_google_data}
-            >
-                Google
-            </Button>
-            </View>
-            <View style={styles.buttonContainer}>
-            <Button style={styles.btn} 
-                onPress={IBM_data_load}
-            >
-                IBM
-            </Button>
+            <TouchableOpacity  onPress={load_google_data}>
+                <Button style={styles.btn}>
+                    Google
+                </Button>
+            </TouchableOpacity>
             
             </View>
             <View style={styles.buttonContainer}>
-            <Button style={styles.btn} 
-                onPress={College_load_data}
-            >
-                Bulk Registration
-            </Button>
+            <TouchableOpacity  onPress={IBM_data_load}>
+                <Button style={styles.btn} 
+                   
+                >
+                    IBM
+                </Button>
+            </TouchableOpacity>
+            
+            </View>
+            <View style={styles.buttonContainer}>
+                <TouchableOpacity  onPress={College_load_data}>
+                <Button style={styles.btn}>
+                        Bulk Registration
+                    </Button>
+                </TouchableOpacity>
             
             </View>
             
@@ -156,5 +213,17 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         borderRadius:50,
         alignItems:'center',
+    },
+    logoutView:{
+        top:0,
+        position:'absolute',
+        alignSelf:'flex-end',
+        paddingTop:20,
+    },
+    btnlogout:{
+        marginTop:20,
+        marginRight:10,
+        backgroundColor:'#778899',
+        borderRadius:10,
     }
 })

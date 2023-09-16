@@ -60,3 +60,18 @@ export const deleteOfflineGoogle =()=>{
       );
     });
 }
+
+export const deleteLogin =()=>{
+  db.transaction((tx)=>{
+      tx.executeSql('DELETE FROM login_table;',
+      [],(_,result)=>{
+        if(result.rowsAffected >0){
+          console.log('Deleted login server');
+        }
+        else{
+          console.log("No records")
+        }
+      }
+      );
+    });
+}

@@ -2,7 +2,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { enableScreens } from "react-native-screens";
 import * as BackgroundFetch from 'expo-background-fetch';
-// import components
+// import login
+import Login from "./pages/LoginPage/Login";
 
 // entering page
 import StartPage from "./pages/Home/EntryPage";
@@ -12,7 +13,6 @@ import SelectRole from "./pages/Common/SelectRole";
 import ReceptionScan from "./pages/Reception/ReceptionScan";
 import ReceptionBarcodeScan from "./pages/Reception/QRCodeScan";
 import ValidateReception from "./pages/Reception/ValidateReception";
-import InputReception from "./pages/Reception/InputReception";
 import MobileValidate from "./pages/Reception/ValidateByMob";
 
 // IBM
@@ -34,7 +34,7 @@ import VerifiedStudentList from "./pages/CollegeVerification/PresentStudentList"
 import AbsentStudentList from "./pages/CollegeVerification/CollegeAbsentList";
 
 // import tables
-import {RegisteredUserTable,Google_Registered_table,Ibm_Registered_table,offlineRegistration} from "./database/SQLiteHelper";
+import {RegisteredUserTable,Google_Registered_table,Ibm_Registered_table,offlineRegistration ,login} from "./database/SQLiteHelper";
 import {UpdateRegisteredTableBackground} from "./BackgroundRunning/BackgroundRun";
 import { useEffect } from "react";
 
@@ -49,6 +49,7 @@ export default function App() {
     offlineRegistration();
     Google_Registered_table();
     Ibm_Registered_table();
+    login();
   },[])
 
   useEffect(()=>{
@@ -87,7 +88,6 @@ export default function App() {
           <Stack.Screen name="ReceptionScan" component={ReceptionScan} />
           <Stack.Screen name="ReceptionQr" component={ReceptionBarcodeScan} />
           <Stack.Screen name="ValidateReceptionQR" component={ValidateReception} options={{headerShown:false}}/>
-          <Stack.Screen name="InputReception" component={InputReception} />
           <Stack.Screen name="mobileReception" component={MobileValidate} />
 
           
@@ -110,6 +110,10 @@ export default function App() {
           <Stack.Screen name="collegeverified" from component={CollegeValidate} />
           <Stack.Screen name="presentStudent" from component={VerifiedStudentList} />
           <Stack.Screen name="absentStudent" from component={AbsentStudentList} />
+
+          {/* login */}
+          <Stack.Screen name="login" from component={Login} />
+
            
     </Stack.Navigator>
     </NavigationContainer>

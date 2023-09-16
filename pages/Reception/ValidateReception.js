@@ -8,6 +8,7 @@ import axios from "axios";
 import {deleteOfflineReg} from "../../database/Updatadb"
 import { openDatabase } from "expo-sqlite";
 import {insert_Reg} from "../../database/Insertion";
+import { GetUserID } from "../../database/RespondId";
 
 
 const db = openDatabase('Registration.db');
@@ -18,19 +19,29 @@ const ValidateReception=({route , navigation})=>{
     const [userData , setUserData ] = useState([])
 
     const [offlinCount , setOfflineCount] = useState('');
-
+    const [userId , setUserId] = useState('');
     var c;
-
+    // let userId;
+    var uid;
   useEffect(()=>{
+    GetUserID()
+    .then(id =>{
+          uid = id;
+          console.log("userrrrr",userId);
+          setUserId(id);
+    })
+    .catch(error =>{
+      console.error('Error:', error);
+  })
     offlineDataCountReception();
-    axios.get(`http://65.2.137.105:3000`)
+    axios.get(`http://icset2023.ictkerala.com`)
     .then(()=>{
         setNetwork("Online");
         // console.log( getUserById(ipAddress,ReceptionqrData));
             if(c > 0){
-                syncOffline_dataToMongo();
+                syncOffline_dataToMongo(uid);
             }
-            axios.get(`http://65.2.137.105:3000/user/${ReceptionqrData}`)
+            axios.get(`http://icset2023.ictkerala.com/user/${ReceptionqrData}`)
             .then((res)=>{
                 console.log(res.data);
             
@@ -72,9 +83,11 @@ const ValidateReception=({route , navigation})=>{
     
   },[])
 
-  const handleVerification=()=>{
+  const handleVerification=(userId)=>{
+    
+    console.log("verrrrrryyyyy",userId);
     if(network === 'Online'){
-    axios.put(`http://65.2.137.105:3000/users/${ReceptionqrData}/verify`,{verify:true})
+    axios.put(`http://icset2023.ictkerala.com/users/${ReceptionqrData}/verify`,{verify:true,userid:userId})
     .then(()=>{
         alert("Verification Success");
         navigateToScan();
@@ -129,7 +142,7 @@ function offlineDataCountReception(){
   };
 
 
-  const syncOffline_dataToMongo = () => {
+  const syncOffline_dataToMongo = (uid) => {
     console.log("syc sync syun");
     db.transaction((tx) => {
       tx.executeSql(
@@ -143,8 +156,8 @@ function offlineDataCountReception(){
 
           // Using Axios for data synchronization
           const axiosRequests = data.map((dataItem) => {
-            return axios.put(`http://65.2.137.105:3000/users/${dataItem}/verify`, {
-              verify: true,
+            return axios.put(`http://icset2023.ictkerala.com/users/${dataItem}/verify`, {
+              verify: true,userid:uid
             });
           });
 
@@ -225,13 +238,16 @@ useEffect(()=>{
                     <Text style={styles.value}>{userData.institution}</Text>
                 </View>
                 <View style={styles.profileBox}>
+                    <Text style={styles.label}>Category: </Text>
+                    <Text style={styles.value}>{userData.category}</Text>
+                </View>
+                <View style={styles.profileBox}>
                     <Text style={styles.label}>MobileNo: </Text>
                     <Text style={styles.value}>{userData.phone}</Text>
                 </View>
                 
                 
-                {/* <Text style={styles.label}>Name:{"abin sebastian peejjej"}</Text>
-                <Text style={styles.label}>Email:</Text> */}
+                
                 {userData["verify"] ? 
                 
                 <View style={styles.verifiedView}>
@@ -244,7 +260,7 @@ useEffect(()=>{
                 :  
                 <View style={styles.buttonView}>
                   <Button mode="contained" style={styles.verifyButton} 
-                      onPress={handleVerification} 
+                      onPress={()=>{handleVerification(userId)}} 
                   >
                       Verify
                   </Button>

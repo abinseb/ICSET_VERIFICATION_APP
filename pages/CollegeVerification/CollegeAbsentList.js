@@ -10,13 +10,15 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import axios from 'axios';
 import { Button } from "react-native-paper";
+import { openDatabase } from "expo-sqlite";
+const db = openDatabase('Registration.db');
 
 const AbsentStudentList = ({ route, navigation }) => {
   const { selectedData } = route.params;
   const [studentlist, setStudentList] = useState([]);
 
   useEffect(() => {
-    axios.get("http://65.2.137.105:3000/users")
+    axios.get("http://icset2023.ictkerala.com/users")
       .then((res) => {
         const data = res.data;
 
@@ -35,7 +37,27 @@ const AbsentStudentList = ({ route, navigation }) => {
         setStudentList(sectionListData);
       })
       .catch((error) => {
-        alert("Network Problem Cannot Fetch Data");
+        alert("offline , Please Check Your Connection");
+        db.transaction((tx) => {
+          tx.executeSql(
+            'SELECT * FROM registeredUser_table WHERE institution = ? AND verify = ? ;',
+            [selectedData, false],
+            (_, { rows }) => {
+              const data = rows._array;
+              if (data.length > 0) {
+                const groupedStudents = groupBy(data, "name");
+      
+                // Convert groupedStudents to an array for SectionList data
+                const sectionListData = Object.keys(groupedStudents).map((name) => ({
+                  title: name,
+                  data: groupedStudents[name],
+                }));
+      
+                setStudentList(sectionListData);
+              }
+            }
+          );
+        });
       });
 
   }, []);

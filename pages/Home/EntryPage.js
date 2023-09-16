@@ -5,9 +5,10 @@ import { Button } from 'react-native-paper';
 import { SafeAreaView } from "react-native-safe-area-context";
 import {RegisteredUserTable,Google_Registered_table,Ibm_Registered_table,offlineRegistration} from "../../database/SQLiteHelper";
 import {insertRegistredUserTable,insertIbmTable,insertGoogleTable} from "../../database/Insertion";
-import {CheckRegTable , CheckIBMTable,CheckGoogleTable} from '../../database/CheckTableSize';
+import {CheckRegTable ,CheckLoginTable} from '../../database/CheckTableSize';
 import axios from "axios";
 const StartPage=({navigation})=>{
+
 
     // avoid backnavigation
     const handleBacknavigation=()=>{
@@ -77,7 +78,22 @@ const load_All_Data_And_Navigate=()=>{
 }
 
 const navigateToSelect=()=>{
-    navigation.navigate("selectRole")
+    var c;
+    CheckLoginTable()
+    .then(rowCount =>{
+        c=rowCount;
+        console.log("login count",rowCount);
+        if(rowCount > 0){
+            navigation.navigate("selectRole");
+        }
+        else{
+            navigation.navigate("login");
+        }
+    })
+    .catch(error =>{
+        console.error('Error:', error);
+    })
+   
 }
 
 
@@ -94,7 +110,7 @@ const navigateToSelect=()=>{
             <View style={styles.connectButtonContainer}> 
               <Button mode="contained" textColor="black" style={styles.btn}
                 onPress={load_All_Data_And_Navigate}
-              >Start</Button>
+              >Login</Button>
             </View>
             
         </SafeAreaView>

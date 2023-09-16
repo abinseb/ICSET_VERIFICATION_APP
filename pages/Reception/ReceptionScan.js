@@ -108,9 +108,11 @@ function offlineDataCountReception(){
             
            
             <View style={styles.btnContainer}>
-              <Button mode="contained" textColor="black" style={styles.btn}
-                onPress={()=>{navigation.navigate("ReceptionQr")}}
-              >Scan</Button>
+              <TouchableOpacity onPress={()=>{navigation.navigate("ReceptionQr")}}>
+                <Button mode="contained" textColor="black" style={styles.btn}
+                  
+                ><Text style={{fontSize:20}}>Scan</Text></Button>
+              </TouchableOpacity>
                 
             </View>
             <View style={styles.textClick}>

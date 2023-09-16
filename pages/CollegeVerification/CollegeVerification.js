@@ -13,6 +13,7 @@ import axios from "axios";
 import { deleteOfflineReg } from "../../database/Updatadb";
 import { openDatabase } from "expo-sqlite";
 import { insert_Reg } from "../../database/Insertion";
+import { GetUserID } from "../../database/RespondId";
 
 const db = openDatabase('Registration.db');
 
@@ -28,9 +29,10 @@ const CollegeValidate = ({ route, navigation }) => {
   const [verifiedCount, setVerifiedCount] = useState(0);
   const [notVerifiedCount, setNotVerifiedCount] = useState(0);
   const [refreshing, setRefreshing] = useState(false); // State for refresh control
+  const [userId , setUserId] = useState('');
 
   var c;
-
+  var uid;
   useEffect(() => {
     offlineDataCountReception();
     fetchData(); // Fetch initial data
@@ -38,15 +40,24 @@ const CollegeValidate = ({ route, navigation }) => {
 
   // Function to fetch data
   const fetchData = () => {
+    GetUserID()
+    .then(id =>{
+          uid = id;
+          console.log("userrrrr",userId);
+          setUserId(id);
+    })
+    .catch(error =>{
+      console.error('Error:', error);
+  })
     setRefreshing(true); // Start refreshing indicator
 
-    axios.get('http://65.2.137.105:3000')
+    axios.get('http://icset2023.ictkerala.com')
       .then(() => {
         setNetwork("Online");
         if (c > 0) {
-          syncOffline_dataToMongo();
+          syncOffline_dataToMongo(uid);
         }
-        axios.get("http://65.2.137.105:3000/users")
+        axios.get("http://icset2023.ictkerala.com/users")
           .then((res) => {
             const data = res.data;
 
@@ -67,9 +78,10 @@ const CollegeValidate = ({ route, navigation }) => {
       .catch((err) => {
         console.log("offline");
         setNetwork("Offline");
+        verifiedCount_Offline();
         db.transaction(tx => {
           tx.executeSql(
-            'SELECT * FROM registeredUser_table WHERE institution = ? AND verify = ?;',
+            'SELECT * FROM registeredUser_table WHERE institution = ? AND verify = ? ;',
             [selectedData, false],
             (_, { rows }) => {
               const data = rows._array.map(row => ({ _id: row.Id, name: row.name, checked: selectAll }));
@@ -77,7 +89,6 @@ const CollegeValidate = ({ route, navigation }) => {
                 setStudentList(data);
                 console.log("offline", data);
                 setNotVerifiedCount(data.length);
-                verifiedCount_Offline();
               }
               setRefreshing(false); // Stop refreshing indicator
             }
@@ -85,6 +96,8 @@ const CollegeValidate = ({ route, navigation }) => {
         });
       });
   };
+
+
 
   const verifiedCount_Offline = () => {
     console.log("joiiiiiiii");
@@ -134,7 +147,7 @@ const CollegeValidate = ({ route, navigation }) => {
     fetchData(); // Call the fetchData function to refresh the data
   };
 
-  const handle_Verification = () => {
+  const handle_Verification = (userId) => {
     const checkedIdsArray = studentlist
       .filter((student) => student.checked)
       .map((student) => student._id);
@@ -147,8 +160,8 @@ const CollegeValidate = ({ route, navigation }) => {
       console.log("Network is online"); // Check network status
 
       const axiosRequest = checkedIdsArray.map((dataId) => {
-        return axios.put(`http://65.2.137.105:3000/users/${dataId}/verify`, {
-          verify: true,
+        return axios.put(`http://icset2023.ictkerala.com/users/${dataId}/verify`, {
+          verify: true,userid:userId
         });
       });
 
@@ -204,7 +217,7 @@ const CollegeValidate = ({ route, navigation }) => {
   }
 
   // syncing
-  const syncOffline_dataToMongo = () => {
+  const syncOffline_dataToMongo = (uid) => {
     console.log("syc sync syun");
     db.transaction((tx) => {
       tx.executeSql(
@@ -219,8 +232,8 @@ const CollegeValidate = ({ route, navigation }) => {
           // Using Axios for data synchronization
           const axiosRequests = data.map((dataItem) => {
             console.log(dataItem);
-            return axios.put(`http://65.2.137.105:3000/users/${dataItem}/verify`, {
-              verify: true,
+            return axios.put(`http://icset2023.ictkerala.com/users/${dataItem}/verify`, {
+              verify: true,userid:uid
             });
 
           });
@@ -315,7 +328,7 @@ const CollegeValidate = ({ route, navigation }) => {
           }
         />
 
-        <Button mode="contained" style={styles.verifyButton} onPress={handle_Verification}>
+        <Button mode="contained" style={styles.verifyButton} onPress={()=>{handle_Verification(userId)}}>
           Verify
         </Button>
 

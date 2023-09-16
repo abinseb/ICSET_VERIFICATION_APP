@@ -18,7 +18,7 @@ const IBMScan =({navigation})=>{
 
 useEffect(() => {
     offlineDataCountReception();
-    axios.get(`http://65.2.137.105:3000`)
+    axios.get(`http://icset2023.ictkerala.com`)
     .then(()=>{
         setStatus("Online");
        
@@ -70,9 +70,11 @@ function offlineDataCountReception(){
               )} */}
            
             <View style={styles.btnContainer}>
+              <TouchableOpacity onPress={()=>{navigation.navigate("ibmqr")}}>
               <Button mode="contained" textColor="black" style={styles.btn}
-                onPress={()=>{navigation.navigate("ibmqr")}}
-              >Scan</Button>
+                
+              ><Text style={{fontSize:20}}>Scan</Text></Button>
+            </TouchableOpacity>
                 
             </View>
             <View style={styles.textClick}>

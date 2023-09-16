@@ -40,7 +40,7 @@ const ReceptionBarcodeScan = () => {
     }
 
     const handleNavigate = () => {
-        navigation.navigate('Input');
+        navigation.navigate('mobileReception');
     }
 
     return (

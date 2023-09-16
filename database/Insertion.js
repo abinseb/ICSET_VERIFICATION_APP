@@ -6,13 +6,14 @@ export const insertRegistredUserTable=(userReg)=>{
         db.transaction(tx=>{
           userReg.forEach(dataItem=> {
                 tx.executeSql(
-                  'INSERT INTO registeredUser_table (Id , name , institution, email , phone , verify,time) VALUES (?,?,?,?,?,?,?);',
+                  'INSERT INTO registeredUser_table (Id , name , institution, email , phone ,category, verify,time) VALUES (?,?,?,?,?,?,?,?);',
                   [
                     dataItem._id,
                     dataItem.name,
                     dataItem.institution,
                     dataItem.email,
                     dataItem.phone,
+                    dataItem.category,
                     dataItem.verify,
                     dataItem.time,
 
@@ -126,4 +127,22 @@ export const insertOfflineIbm =(regId)=>{
         );
       });
 }
+
+export const insert_login=(userReg)=>{
+        
+  db.transaction(tx=>{
+          tx.executeSql(
+            'INSERT INTO login_table (userid , password ) VALUES (?,?);',
+            [
+              userReg._id,
+              userReg.password,
+              
+            ],
+            (_,{insertId}) => console.log(`Inserted row with Id ${insertId}`),
+            error => console.error('Error inserting data: ' , error)
+          );
+    });
+ 
+}
+
 

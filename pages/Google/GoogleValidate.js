@@ -6,7 +6,7 @@ import axios from "axios";
 import {deleteOfflineGoogle} from "../../database/Updatadb"
 import { openDatabase } from "expo-sqlite";
 import {insertOfflineGoogle} from "../../database/Insertion";
-
+import { GetUserID } from "../../database/RespondId";
 
 const db = openDatabase('Registration.db');
 
@@ -16,20 +16,29 @@ const GoogleValidate =({route , navigation})=>{
     const [userData , setUserData ] = useState([])
 
     const [offlinCount , setOfflineCount] = useState('');
-
+    const [userId , setUserId] = useState('')
     var c;
-
+    var uid;
   useEffect(()=>{
+    GetUserID()
+    .then(id =>{
+          uid = id;
+          console.log("userrrrr",userId);
+          setUserId(id);
+    })
+    .catch(error =>{
+      console.error('Error:', error);
+  })
     console.log(googleqrdata);
     offlineDataCountgoogle();
-    axios.get(`http://65.2.137.105:3000`)
+    axios.get(`http://icset2023.ictkerala.com`)
     .then(()=>{
         setNetwork("Online");
         // console.log( getUserById(ipAddress,ReceptionqrData));
             if(c > 0){
-                syncOffline_dataToMongo();
+                syncOffline_dataToMongo(uid);
             }
-            axios.get(`http://65.2.137.105:3000/google/${googleqrdata}`)
+            axios.get(`http://icset2023.ictkerala.com/google/${googleqrdata}`)
             .then((res)=>{
                 console.log(res.data);
             
@@ -65,9 +74,9 @@ const GoogleValidate =({route , navigation})=>{
     
   },[])
 
-  const handleVerification=()=>{
+  const handleVerification=(userId)=>{
     if(network === 'Online'){
-    axios.put(`http://65.2.137.105:3000/google/${googleqrdata}/verify`,{verify:true})
+    axios.put(`http://icset2023.ictkerala.com/google/${googleqrdata}/verify`,{verify:true ,userid:userId})
     .then(()=>{
         alert("Verification Success");
         navigateToScan();
@@ -122,7 +131,7 @@ function offlineDataCountgoogle(){
   };
 
 
-  const syncOffline_dataToMongo = () => {
+  const syncOffline_dataToMongo = (uid) => {
     console.log("syc sync syun");
     db.transaction((tx) => {
       tx.executeSql(
@@ -136,8 +145,8 @@ function offlineDataCountgoogle(){
 
           // Using Axios for data synchronization
           const axiosRequests = data.map((dataItem) => {
-            return axios.put(`http://65.2.137.105:3000/google/${dataItem}/verify`, {
-              verify: true,
+            return axios.put(`http://icset2023.ictkerala.com/google/${dataItem}/verify`, {
+              verify: true,userid:uid
             });
           });
 
@@ -238,7 +247,7 @@ useEffect(()=>{
                 :  
                 <View style={styles.buttonView}>
                   <Button mode="contained" style={styles.verifyButton} 
-                      onPress={handleVerification} 
+                      onPress={()=>{handleVerification(userId)}} 
                   >
                       Verify
                   </Button>

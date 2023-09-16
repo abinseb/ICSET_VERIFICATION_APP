@@ -16,7 +16,7 @@ const GoogleScan =({navigation})=>{
 
 useEffect(() => {
     offlineDataCountGoogle();
-    axios.get(`http://65.2.137.105:3000`)
+    axios.get(`http://icset2023.ictkerala.com`)
     .then(()=>{
         setStatus("Online");
        
@@ -59,9 +59,11 @@ function offlineDataCountGoogle(){
               </View>
            
             <View style={styles.btnContainer}>
+              <TouchableOpacity  onPress={()=>{navigation.navigate("googleqr")}}>
               <Button mode="contained" textColor="black" style={styles.btn}
-                onPress={()=>{navigation.navigate("googleqr")}}
-              >Scan</Button>
+               
+              ><Text style={{fontSize:20}}>Scan</Text></Button>
+            </TouchableOpacity>
                 
             </View>
             <View style={styles.textClick}>
