@@ -6,7 +6,7 @@ export const insertRegistredUserTable=(userReg)=>{
         db.transaction(tx=>{
           userReg.forEach(dataItem=> {
                 tx.executeSql(
-                  'INSERT INTO registeredUser_table (Id , name , institution, email , phone , verify,lunch,timeStamp) VALUES (?,?,?,?,?,?,?,?);',
+                  'INSERT INTO registeredUser_table (Id , name , institution, email , phone , verify,time) VALUES (?,?,?,?,?,?,?);',
                   [
                     dataItem._id,
                     dataItem.name,
@@ -14,8 +14,7 @@ export const insertRegistredUserTable=(userReg)=>{
                     dataItem.email,
                     dataItem.phone,
                     dataItem.verify,
-                    dataItem.lunch,
-                    dataItem.timeStamp,
+                    dataItem.time,
 
                   ],
                   (_,{insertId}) => console.log(`Inserted row with Id ${insertId}`),

@@ -6,7 +6,7 @@ const db = openDatabase('Registration.db');
 export const RegisteredUserTable = () => {
   db.transaction(tx => {
     tx.executeSql(
-      'CREATE TABLE IF NOT EXISTS registeredUser_table (Id INTEGER PRIMARY KEY, name TEXT , institution TEXT ,email TEXT , phone TEXT , verify BOOLEAN , lunch BOOLEAN,timeStamp DATETIME);',
+      'CREATE TABLE IF NOT EXISTS registeredUser_table (Id INTEGER PRIMARY KEY, name TEXT , institution TEXT ,email TEXT , phone TEXT , verify BOOLEAN , time TEXT);',
       [],
       () => console.log('RegTable created Successfully'),
       error => console.error('Error creating table :', error) // Remove the semicolon here
@@ -50,16 +50,7 @@ db.transaction(tx2 =>{
 });
 }
 
-export const offline_lunch=()=>{
-  db.transaction(tx2 =>{
-    tx2.executeSql(
-      'CREATE TABLE IF NOT EXISTS offline_lunch (Id INTEGER);',
-      [],
-      ()=> console.log("offlunch_data table created"),
-      error => console.error('Error :', error)
-    );
-  });
-  }
+
 
   export const offline_google=()=>{
     db.transaction(tx2 =>{

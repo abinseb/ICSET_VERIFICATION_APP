@@ -278,15 +278,16 @@ const CollegeValidate = ({ route, navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.buttonView}>
+       
+        <Button mode="contained" textColor="black" style={styles.absentButton}
+          onPress={navigateToAbsentList}
+        >
+          Not Verified
+        </Button>
         <Button mode="contained" textColor="black" style={styles.CollegeverifyButton}
           onPress={navigateToPresentList}
         >
           Verified List
-        </Button>
-        <Button mode="contained" textColor="black" style={styles.absentButton}
-          onPress={navigateToAbsentList}
-        >
-          Absent List
         </Button>
       </View>
       <View style={styles.networkStatus}>
@@ -389,7 +390,7 @@ const styles = StyleSheet.create({
   absentButton: {
     backgroundColor: "#e3b3ab",
     marginTop: 20,
-    marginLeft: 20,
+    marginRight: 20,
   },
   buttonView: {
     justifyContent: 'flex-start',

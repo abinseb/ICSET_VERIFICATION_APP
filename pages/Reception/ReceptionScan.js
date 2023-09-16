@@ -12,19 +12,12 @@ import { openDatabase } from "expo-sqlite";
 const db = openDatabase('Registration.db');
 
 const ReceptionScan =({navigation})=>{
-    const [status , setStatus] = useState('');
+
+  var n;
     const [offlinCount , setOfflineCount] = useState('');
 
 useEffect(() => {
     offlineDataCountReception();
-    axios.get(`http://65.2.137.105:3000`)
-    .then(()=>{
-        setStatus("Online");
-       
-    })
-    .catch((error)=>{
-        setStatus("Offline");
-    })
 }, []);
 
 function offlineDataCountReception(){
@@ -34,7 +27,7 @@ function offlineDataCountReception(){
         [],
         (_, { rows }) =>{
           const countData = rows.item(0).rowCount;
-          c=countData;
+          n=countData;
           console.log('Number of count :',countData);
           setOfflineCount(countData);
         },
@@ -45,6 +38,16 @@ function offlineDataCountReception(){
     });
   };
 
+  const SynAllRequest=()=>{
+    offlineDataCountReception();
+        if(n>0)
+        {
+          syncOffline_dataToMongo();
+        }
+        else{
+          alert("Nothing To Sync");
+        }
+  }
   
   const syncOffline_dataToMongo = () => {
     db.transaction((tx) => {
@@ -88,21 +91,21 @@ function offlineDataCountReception(){
     console.log("loaded")
     return(
         <SafeAreaView style={styles.container}>
-            <View style={styles.ViewNetwork}>
+            {/* <View style={styles.ViewNetwork}>
                 <Text style={styles.networkText}>{status}</Text>
-              </View>
+              </View> */}
               <View style={styles.ViewCount}>
                 <Text style={styles.networkText}>Offline Verified Count :{offlinCount}</Text>
               </View>
-            {/* {status === 'Online' &&(
+              
             <View style={styles.synButtonView}>
               <Button mode="contained" style={styles.synButton} textColor='#000'
-                      onPress={syncOffline_dataToMongo} 
+                      onPress={SynAllRequest} 
                   >
                       Sync
                   </Button>
               </View>
-              )} */}
+            
            
             <View style={styles.btnContainer}>
               <Button mode="contained" textColor="black" style={styles.btn}

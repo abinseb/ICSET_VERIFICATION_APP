@@ -1,6 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { enableScreens } from "react-native-screens";
+import * as BackgroundFetch from 'expo-background-fetch';
 // import components
 
 // entering page
@@ -34,6 +35,7 @@ import AbsentStudentList from "./pages/CollegeVerification/CollegeAbsentList";
 
 // import tables
 import {RegisteredUserTable,Google_Registered_table,Ibm_Registered_table,offlineRegistration} from "./database/SQLiteHelper";
+import {UpdateRegisteredTableBackground} from "./BackgroundRunning/BackgroundRun";
 import { useEffect } from "react";
 
 // enable screens 
@@ -48,6 +50,29 @@ export default function App() {
     Google_Registered_table();
     Ibm_Registered_table();
   },[])
+
+  useEffect(()=>{
+    const backgroundTaskName = 'defaultRun';
+    BackgroundFetch.registerTaskAsync(backgroundTaskName,{
+      minimumInterval:10,
+      stopOnTerminate:false,
+    });
+    return () => {
+      BackgroundFetch.unregisterTaskAsync(backgroundTaskName);
+    };
+  },[]);
+
+  // Set up a timer to call defaultRun every 10 seconds
+  useEffect(() => {
+    const timerId = setInterval(() => {
+      UpdateRegisteredTableBackground();
+    }, 20 * 1000); 
+
+    // Clean up the timer when the component unmounts
+    return () => {
+      clearInterval(timerId);
+    };
+  }, []);
 
   return (
    
