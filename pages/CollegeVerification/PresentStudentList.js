@@ -19,12 +19,14 @@ const VerifiedStudentList = ({ route, navigation }) => {
   const [studentlist, setStudentList] = useState([]);
 
   useEffect(() => {
-    axios.get("http://65.2.172.47/users")
+    axios.post('http://65.2.172.47/getUsersByInstitution',{
+          institution:selectedData,
+        })
       .then((res) => {
-        const data = res.data;
+        const dataStudent = res.data;
 
         // Filter students based on the condition
-        const filteredStudents = data.filter((student) => student.institution === selectedData && student.verify === true);
+        const filteredStudents = dataStudent.filter((student) =>student.verify === true);
 
         // Group students by name for SectionList
         const groupedStudents = groupBy(filteredStudents, "name");
@@ -107,7 +109,7 @@ const VerifiedStudentList = ({ route, navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.viewCount}>
-        <Text style={styles.countText}>Present Count :{getTotalCount()}</Text>
+        <Text style={styles.countText}>Verified Count :{getTotalCount()}</Text>
       </View>
       <View style={styles.viewBox}>
         <Text style={styles.collegeText}>{selectedData}</Text>

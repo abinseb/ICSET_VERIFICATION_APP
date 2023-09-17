@@ -57,15 +57,17 @@ const CollegeValidate = ({ route, navigation }) => {
         if (c > 0) {
           syncOffline_dataToMongo(uid);
         }
-        axios.get("http://65.2.172.47/users")
+        axios.post('http://65.2.172.47/getUsersByInstitution',{
+          institution:selectedData,
+        })
           .then((res) => {
-            const data = res.data;
-
+            const dataStudent = res.data;
+            console.log("stttt",dataStudent);
             // Filter students based on the condition
-            const filteredStudents = data.filter((student) => student.institution === selectedData && student.verify === false);
+            const filteredStudents = dataStudent.filter((student) => student.verify === false);
 
             setStudentList(filteredStudents.map((student) => ({ ...student, checked: selectAll })));
-            const verifiedStudents = data.filter((student) => student.institution === selectedData && student.verify === true);
+            const verifiedStudents = dataStudent.filter((student) => student.verify === true);
             setNotVerifiedCount(filteredStudents.length);
             setVerifiedCount(verifiedStudents.length);
             setRefreshing(false); // Stop refreshing indicator

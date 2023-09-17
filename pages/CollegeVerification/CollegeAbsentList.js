@@ -18,12 +18,14 @@ const AbsentStudentList = ({ route, navigation }) => {
   const [studentlist, setStudentList] = useState([]);
 
   useEffect(() => {
-    axios.get("http://65.2.172.47/users")
+    axios.post('http://65.2.172.47/getUsersByInstitution',{
+          institution:selectedData,
+        })
       .then((res) => {
-        const data = res.data;
+        const dataStudentlist = res.data;
 
         // Filter students based on the condition
-        const filteredStudents = data.filter((student) => student.institution === selectedData && student.verify === false);
+        const filteredStudents = dataStudentlist.filter((student) =>  student.verify === false);
 
         // Group students by name for SectionList
         const groupedStudents = groupBy(filteredStudents, "name");
