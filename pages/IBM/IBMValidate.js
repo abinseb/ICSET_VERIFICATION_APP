@@ -35,14 +35,14 @@ const IBMValidate =({route , navigation})=>{
   })
     console.log(ibmqrdata);
     offlineDataCountIBM();
-    axios.get(`http://icset2023.ictkerala.com`)
+    axios.get(`http://65.2.172.47`)
     .then(()=>{
         setNetwork("Online");
         // console.log( getUserById(ipAddress,ReceptionqrData));
             if(c > 0){
                 syncOffline_dataToMongo(uid);
             }
-            axios.get(`http://icset2023.ictkerala.com/ibm/${ibmqrdata}`)
+            axios.get(`http://65.2.172.47/ibm/${ibmqrdata}`)
             .then((res)=>{
                 console.log(res.data);
             
@@ -86,7 +86,7 @@ const IBMValidate =({route , navigation})=>{
 
   const handleVerification=(userId)=>{
     if(network === 'Online'){
-    axios.put(`http://icset2023.ictkerala.com/ibm/${ibmqrdata}/verify`,{verify:true,userid:userId})
+    axios.put(`http://65.2.172.47/ibm/${ibmqrdata}/verify`,{verify:true,userid:userId})
     .then(()=>{
         alert("Verification Success");
         navigateToScan();
@@ -155,7 +155,7 @@ function offlineDataCountIBM(){
 
           // Using Axios for data synchronization
           const axiosRequests = data.map((dataItem) => {
-            return axios.put(`http://icset2023.ictkerala.com/ibm/${dataItem}/verify`, {
+            return axios.put(`http://65.2.172.47/ibm/${dataItem}/verify`, {
               verify: true,userid:uid,
             });
           });

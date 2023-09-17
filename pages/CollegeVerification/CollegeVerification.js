@@ -51,13 +51,13 @@ const CollegeValidate = ({ route, navigation }) => {
   })
     setRefreshing(true); // Start refreshing indicator
 
-    axios.get('http://icset2023.ictkerala.com')
+    axios.get('http://65.2.172.47')
       .then(() => {
         setNetwork("Online");
         if (c > 0) {
           syncOffline_dataToMongo(uid);
         }
-        axios.get("http://icset2023.ictkerala.com/users")
+        axios.get("http://65.2.172.47/users")
           .then((res) => {
             const data = res.data;
 
@@ -84,7 +84,7 @@ const CollegeValidate = ({ route, navigation }) => {
             'SELECT * FROM registeredUser_table WHERE institution = ? AND verify = ? ;',
             [selectedData, false],
             (_, { rows }) => {
-              const data = rows._array.map(row => ({ _id: row.Id, name: row.name, checked: selectAll }));
+              const data = rows._array.map(row => ({ _id: row.Id, name: row.name,phone:row.phone,email:row.email, checked: selectAll }));
               if (data.length > 0) {
                 setStudentList(data);
                 console.log("offline", data);
@@ -160,7 +160,7 @@ const CollegeValidate = ({ route, navigation }) => {
       console.log("Network is online"); // Check network status
 
       const axiosRequest = checkedIdsArray.map((dataId) => {
-        return axios.put(`http://icset2023.ictkerala.com/users/${dataId}/verify`, {
+        return axios.put(`http://65.2.172.47/users/${dataId}/verify`, {
           verify: true,userid:userId
         });
       });
@@ -174,7 +174,7 @@ const CollegeValidate = ({ route, navigation }) => {
           navigateToCollege();
         })
         .catch((error) => {
-          alert("Something went wrong");
+          alert("Please check your Connection");
           console.error(error);
         });
     }
@@ -232,7 +232,7 @@ const CollegeValidate = ({ route, navigation }) => {
           // Using Axios for data synchronization
           const axiosRequests = data.map((dataItem) => {
             console.log(dataItem);
-            return axios.put(`http://icset2023.ictkerala.com/users/${dataItem}/verify`, {
+            return axios.put(`http://65.2.172.47/users/${dataItem}/verify`, {
               verify: true,userid:uid
             });
 

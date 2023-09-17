@@ -36,63 +36,63 @@ const Collgelist = ({ navigation }) => {
 
 
   // offline data count
-function offlineDataCountReception(){
-  db.transaction(tx =>{
-    tx.executeSql(
-      'SELECT COUNT(*) AS rowCount FROM offline_reception;',
-      [],
-      (_, { rows }) =>{
-        const countData = rows.item(0).rowCount;
-        c=countData;
-        console.log('Number of count :',countData);
-        setOfflineCount(countData);
-      },
-      (_, error) =>{
-        console.error('Error fetching record count:', error);
-      }
-    );
-  });
-};
+// function offlineDataCountReception(){
+//   db.transaction(tx =>{
+//     tx.executeSql(
+//       'SELECT COUNT(*) AS rowCount FROM offline_reception;',
+//       [],
+//       (_, { rows }) =>{
+//         const countData = rows.item(0).rowCount;
+//         c=countData;
+//         console.log('Number of count :',countData);
+//         setOfflineCount(countData);
+//       },
+//       (_, error) =>{
+//         console.error('Error fetching record count:', error);
+//       }
+//     );
+//   });
+// };
 
  // syncing
- const syncOffline_dataToMongo = () => {
-  console.log("syc sync syun");
-  db.transaction((tx) => {
-    tx.executeSql(
-      'SELECT Id FROM offline_reception;',
-      [],
-      (_, { rows }) => {
-        const data = rows._array.map((row) => row.Id);
-        console.log("Fetched Id Values:", data);
+//  const syncOffline_dataToMongo = () => {
+//   console.log("syc sync syun");
+//   db.transaction((tx) => {
+//     tx.executeSql(
+//       'SELECT Id FROM offline_reception;',
+//       [],
+//       (_, { rows }) => {
+//         const data = rows._array.map((row) => row.Id);
+//         console.log("Fetched Id Values:", data);
 
-        // Uncomment and set up Gun.js here if needed
+//         // Uncomment and set up Gun.js here if needed
 
-        // Using Axios for data synchronization
-        const axiosRequests = data.map((dataItem) => {
-          console.log(dataItem);
-          return axios.put(`http://65.2.137.105:3000/users/${dataItem}/verify`, {
-            verify: true,
-          });
+//         // Using Axios for data synchronization
+//         const axiosRequests = data.map((dataItem) => {
+//           console.log(dataItem);
+//           return axios.put(`http://65.2.172.47/users/${dataItem}/verify`, {
+//             verify: true,
+//           });
           
-        });
+//         });
 
-        Promise.all(axiosRequests)
-          .then(() => {
-            deleteOfflineReg();
-            alert("Syncing Successful");
-            offlineDataCountReception();
-          })
-          .catch((error) => {
-            alert("Something went wrong");
-            console.error(error);
-          });
-      },
-      (_, error) => {
-        console.log('Error fetching data', error);
-      }
-    );
-  });
-}
+//         Promise.all(axiosRequests)
+//           .then(() => {
+//             deleteOfflineReg();
+//             alert("Syncing Successful");
+//             offlineDataCountReception();
+//           })
+//           .catch((error) => {
+//             alert("Something went wrong");
+//             console.error(error);
+//           });
+//       },
+//       (_, error) => {
+//         console.log('Error fetching data', error);
+//       }
+//     );
+//   });
+// }
 
   return (
     <SafeAreaView style={styles.container}>

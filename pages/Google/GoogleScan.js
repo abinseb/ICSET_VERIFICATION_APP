@@ -16,7 +16,7 @@ const GoogleScan =({navigation})=>{
 
 useEffect(() => {
     offlineDataCountGoogle();
-    axios.get(`http://icset2023.ictkerala.com`)
+    axios.get(`http://65.2.172.47`)
     .then(()=>{
         setStatus("Online");
        

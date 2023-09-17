@@ -2,6 +2,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { enableScreens } from "react-native-screens";
 import * as BackgroundFetch from 'expo-background-fetch';
+import * as TaskManager from 'expo-task-manager';
 // import login
 import Login from "./pages/LoginPage/Login";
 
@@ -34,10 +35,14 @@ import VerifiedStudentList from "./pages/CollegeVerification/PresentStudentList"
 import AbsentStudentList from "./pages/CollegeVerification/CollegeAbsentList";
 
 // import tables
-import {RegisteredUserTable,Google_Registered_table,Ibm_Registered_table,offlineRegistration ,login} from "./database/SQLiteHelper";
+import {RegisteredUserTable,Google_Registered_table,Ibm_Registered_table,offlineRegistration ,login,offline_ibm,offline_google} from "./database/SQLiteHelper";
 import {UpdateRegisteredTableBackground} from "./BackgroundRunning/BackgroundRun";
 import { useEffect } from "react";
 
+TaskManager.defineTask('defaultRun', async () => {
+  // This is where you define the background task logic
+  UpdateRegisteredTableBackground();
+});
 // enable screens 
 enableScreens();
 
@@ -50,6 +55,8 @@ export default function App() {
     Google_Registered_table();
     Ibm_Registered_table();
     login();
+    offline_google();
+    offline_ibm();
   },[])
 
   useEffect(()=>{

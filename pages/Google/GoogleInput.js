@@ -31,7 +31,7 @@ const GoogleInput = () => {
     const fetchIdFromServer = () => {
       return new Promise((resolve, reject) => {
         axios
-          .get("http://65.2.137.105:3000/google")
+          .get("http://65.2.172.47/google")
           .then((res) => {
             const data = res.data;
             const fetchId = data.find((student) => student.phone === inputID);

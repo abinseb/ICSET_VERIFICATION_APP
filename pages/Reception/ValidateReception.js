@@ -34,21 +34,21 @@ const ValidateReception=({route , navigation})=>{
       console.error('Error:', error);
   })
     offlineDataCountReception();
-    axios.get(`http://icset2023.ictkerala.com`)
+    axios.get(`http://65.2.172.47`)
     .then(()=>{
         setNetwork("Online");
         // console.log( getUserById(ipAddress,ReceptionqrData));
             if(c > 0){
                 syncOffline_dataToMongo(uid);
             }
-            axios.get(`http://icset2023.ictkerala.com/user/${ReceptionqrData}`)
+            axios.get(`http://65.2.172.47/user/${ReceptionqrData}`)
             .then((res)=>{
                 console.log(res.data);
             
                 setUserData(res.data);
             })
             .catch((error)=>{
-                alert("User Not Found");
+                alert("User Not Registered");
             })
     
     })
@@ -67,7 +67,7 @@ const ValidateReception=({route , navigation})=>{
                         console.log(data);
                     }
                     else{
-                      alert("User Not Found");
+                      alert("User Not Registered");
                     }
                 }
             )
@@ -87,7 +87,7 @@ const ValidateReception=({route , navigation})=>{
     
     console.log("verrrrrryyyyy",userId);
     if(network === 'Online'){
-    axios.put(`http://icset2023.ictkerala.com/users/${ReceptionqrData}/verify`,{verify:true,userid:userId})
+    axios.put(`http://65.2.172.47/users/${ReceptionqrData}/verify`,{verify:true,userid:userId})
     .then(()=>{
         alert("Verification Success");
         navigateToScan();
@@ -156,7 +156,7 @@ function offlineDataCountReception(){
 
           // Using Axios for data synchronization
           const axiosRequests = data.map((dataItem) => {
-            return axios.put(`http://icset2023.ictkerala.com/users/${dataItem}/verify`, {
+            return axios.put(`http://65.2.172.47/users/${dataItem}/verify`, {
               verify: true,userid:uid
             });
           });
@@ -168,7 +168,7 @@ function offlineDataCountReception(){
               offlineDataCountReception();
             })
             .catch((error) => {
-              alert("Something went wrong");
+              alert("Please Check Your Internet Connection");
               console.error(error);
             });
         },

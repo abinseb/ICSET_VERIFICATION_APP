@@ -16,7 +16,7 @@ export const UpdateRegisteredTableBackground = () => {
         // Make a POST request to the server with maxTimeStamp in the request body
 
         axios
-          .post('http://65.2.137.105:3000/time-sync', {
+          .post('http://65.2.172.47/time-sync', {
             maxtime: maxTimeStamp,
           })
           .then((res) => {

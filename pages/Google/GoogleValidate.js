@@ -31,14 +31,14 @@ const GoogleValidate =({route , navigation})=>{
   })
     console.log(googleqrdata);
     offlineDataCountgoogle();
-    axios.get(`http://icset2023.ictkerala.com`)
+    axios.get(`http://65.2.172.47`)
     .then(()=>{
         setNetwork("Online");
         // console.log( getUserById(ipAddress,ReceptionqrData));
             if(c > 0){
                 syncOffline_dataToMongo(uid);
             }
-            axios.get(`http://icset2023.ictkerala.com/google/${googleqrdata}`)
+            axios.get(`http://65.2.172.47/google/${googleqrdata}`)
             .then((res)=>{
                 console.log(res.data);
             
@@ -76,7 +76,7 @@ const GoogleValidate =({route , navigation})=>{
 
   const handleVerification=(userId)=>{
     if(network === 'Online'){
-    axios.put(`http://icset2023.ictkerala.com/google/${googleqrdata}/verify`,{verify:true ,userid:userId})
+    axios.put(`http://65.2.172.47/google/${googleqrdata}/verify`,{verify:true ,userid:userId})
     .then(()=>{
         alert("Verification Success");
         navigateToScan();
@@ -145,7 +145,7 @@ function offlineDataCountgoogle(){
 
           // Using Axios for data synchronization
           const axiosRequests = data.map((dataItem) => {
-            return axios.put(`http://icset2023.ictkerala.com/google/${dataItem}/verify`, {
+            return axios.put(`http://65.2.172.47/google/${dataItem}/verify`, {
               verify: true,userid:uid
             });
           });

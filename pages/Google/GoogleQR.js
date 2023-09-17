@@ -63,7 +63,7 @@ const GoogleQR = () => {
             <View style={styles.textClick}>
                 <Text style={styles.text1}>If QR won't work?{" "}</Text>
                 <TouchableOpacity onPress={handleNavigate} >
-                    <Text style={styles.text2} onPress={navigation.navigate("googleInput")}>Click</Text>
+                    <Text style={styles.text2} >Click</Text>
                 </TouchableOpacity>
             </View>
         </SafeAreaView>

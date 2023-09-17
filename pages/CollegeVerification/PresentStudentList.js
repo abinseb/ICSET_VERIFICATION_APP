@@ -19,7 +19,7 @@ const VerifiedStudentList = ({ route, navigation }) => {
   const [studentlist, setStudentList] = useState([]);
 
   useEffect(() => {
-    axios.get("http://icset2023.ictkerala.com/users")
+    axios.get("http://65.2.172.47/users")
       .then((res) => {
         const data = res.data;
 

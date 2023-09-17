@@ -18,7 +18,7 @@ const IBMScan =({navigation})=>{
 
 useEffect(() => {
     offlineDataCountReception();
-    axios.get(`http://icset2023.ictkerala.com`)
+    axios.get(`http://65.2.172.47`)
     .then(()=>{
         setStatus("Online");
        

@@ -3,12 +3,16 @@ import { TouchableOpacity } from "react-native";
 import { View,Text ,StyleSheet, Image,BackHandler,Alert} from "react-native";
 import { Button } from 'react-native-paper';
 import { SafeAreaView } from "react-native-safe-area-context";
-import {RegisteredUserTable,Google_Registered_table,Ibm_Registered_table,offlineRegistration} from "../../database/SQLiteHelper";
-import {insertRegistredUserTable,insertIbmTable,insertGoogleTable} from "../../database/Insertion";
+// import {RegisteredUserTable,Google_Registered_table,Ibm_Registered_table,offlineRegistration} from "../../database/SQLiteHelper";
+// import {insertRegistredUserTable,insertIbmTable,insertGoogleTable} from "../../database/Insertion";
 import {CheckRegTable ,CheckLoginTable} from '../../database/CheckTableSize';
 import axios from "axios";
+import {RegisteredUserTable,Google_Registered_table,Ibm_Registered_table,offlineRegistration ,login,offline_ibm,offline_google} from "../../database/SQLiteHelper";
+// import { View, StyleSheet, BackHandler, Alert, TouchableOpacity } from "react-native";
+
 const StartPage=({navigation})=>{
 
+    
 
     // avoid backnavigation
     const handleBacknavigation=()=>{
@@ -48,53 +52,52 @@ const StartPage=({navigation})=>{
 
 
 
-const load_All_Data_And_Navigate=()=>{
-    var c;
-    console.log("kiiiiiiiiiiii");
-    // table count
-    CheckRegTable()
-  .then(rowCount => {
-    c=rowCount;
-    console.log('reg data count ===', rowCount);
-  })
-  .catch(error => {
-    console.error('Error:', error);
-  });
-    axios.get(`http://65.2.137.105:3000/users`)
-    .then((res)=>{
-        // console.log(res.data);
-    //    setRegData(res.data);
-       if(c === 0){
-       insertRegistredUserTable(res.data);
-        }
-        // navigateToReception();
+// const load_All_Data_And_Navigate=()=>{
+//     var c;
+//     console.log("kiiiiiiiiiiii");
+//     // table count
+//     CheckRegTable()
+//   .then(rowCount => {
+//     c=rowCount;
+//     console.log('reg data count ===', rowCount);
+//   })
+//   .catch(error => {
+//     console.error('Error:', error);
+//   });
+//     axios.get(`http://65.2.137.105:3000/users`)
+//     .then((res)=>{
+//         // console.log(res.data);
+//     //    setRegData(res.data);
+//        if(c === 0){
+//        insertRegistredUserTable(res.data);
+//         }
+//         // navigateToReception();
 
-    })
-    .catch((error)=>{
-        console.error(error);
+//     })
+//     .catch((error)=>{
+//         console.error(error);
        
-    })
-    navigateToSelect();
-}
+//     })
+//     navigateToSelect();
+// }
 
-const navigateToSelect=()=>{
-    var c;
-    CheckLoginTable()
-    .then(rowCount =>{
-        c=rowCount;
-        console.log("login count",rowCount);
-        if(rowCount > 0){
-            navigation.navigate("selectRole");
-        }
-        else{
-            navigation.navigate("login");
-        }
-    })
-    .catch(error =>{
-        console.error('Error:', error);
-    })
-   
-}
+const navigateToSelect = async () => {
+  
+    console.log("ppppppppp");
+    try {
+      const c = await CheckLoginTable();
+      console.log("login count", c);
+      
+      if (c > 0) {
+        navigation.navigate("selectRole");
+      } else {
+        navigation.navigate("login");
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+  
 
 
     return(
@@ -109,8 +112,8 @@ const navigateToSelect=()=>{
             </View>
             <View style={styles.connectButtonContainer}> 
               <Button mode="contained" textColor="black" style={styles.btn}
-                onPress={load_All_Data_And_Navigate}
-              >Login</Button>
+                onPress={navigateToSelect}
+              >Start</Button>
             </View>
             
         </SafeAreaView>

@@ -7,7 +7,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import axios from "axios";
 
 import {deleteOfflineReg} from "../../database/Updatadb"
-
+import { GetUserID } from "../../database/RespondId";
 import { openDatabase } from "expo-sqlite";
 const db = openDatabase('Registration.db');
 
@@ -16,9 +16,11 @@ const ReceptionScan =({navigation})=>{
   var n;
     const [offlinCount , setOfflineCount] = useState('');
 
-useEffect(() => {
-    offlineDataCountReception();
-}, []);
+    var uid;
+
+// useEffect(() => {
+//     offlineDataCountReception();
+// }, []);
 
 function offlineDataCountReception(){
     db.transaction(tx =>{
@@ -28,6 +30,12 @@ function offlineDataCountReception(){
         (_, { rows }) =>{
           const countData = rows.item(0).rowCount;
           n=countData;
+          if (n > 0){
+            syncOffline_dataToMongo()
+          }
+          else{
+            alert("Nothing to Sync");
+          }
           console.log('Number of count :',countData);
           setOfflineCount(countData);
         },
@@ -38,18 +46,28 @@ function offlineDataCountReception(){
     });
   };
 
-  const SynAllRequest=()=>{
-    offlineDataCountReception();
-        if(n>0)
-        {
-          syncOffline_dataToMongo();
-        }
-        else{
-          alert("Nothing To Sync");
-        }
-  }
+  // const SynAllRequest=()=>{
+  //   offlineDataCountReception();
+  //       if(n>0)
+  //       {
+  //         syncOffline_dataToMongo();
+  //       }
+  //       else{
+  //         alert("Nothing To Sync");
+  //       }
+  // }
   
+
   const syncOffline_dataToMongo = () => {
+    GetUserID()
+    .then(id =>{
+        uid = id;
+          console.log("userrrrr",uid);
+    })
+    .catch(error =>{
+      console.error('Error:', error);
+  })
+    console.log("syc sync syun,",uid);
     db.transaction((tx) => {
       tx.executeSql(
         'SELECT Id FROM offline_reception;',
@@ -62,19 +80,19 @@ function offlineDataCountReception(){
 
           // Using Axios for data synchronization
           const axiosRequests = data.map((dataItem) => {
-            return axios.put(`http://65.2.137.105:3000/users/${dataItem}/verify`, {
-              verify: true,
+            return axios.put(`http://65.2.172.47/users/${dataItem}/verify`, {
+              verify: true,userid:uid
             });
           });
 
           Promise.all(axiosRequests)
             .then(() => {
               deleteOfflineReg();
-              alert("Syncing Successful");
-              offlineDataCountReception();
+              alert("Reception Syncing Successful");
+             
             })
             .catch((error) => {
-              alert("Something went wrong");
+              alert("Please Check Your Internet Connection");
               console.error(error);
             });
         },
@@ -94,13 +112,13 @@ function offlineDataCountReception(){
             {/* <View style={styles.ViewNetwork}>
                 <Text style={styles.networkText}>{status}</Text>
               </View> */}
-              <View style={styles.ViewCount}>
+              {/* <View style={styles.ViewCount}>
                 <Text style={styles.networkText}>Offline Verified Count :{offlinCount}</Text>
-              </View>
+              </View> */}
               
             <View style={styles.synButtonView}>
               <Button mode="contained" style={styles.synButton} textColor='#000'
-                      onPress={SynAllRequest} 
+                      onPress={offlineDataCountReception} 
                   >
                       Sync
                   </Button>

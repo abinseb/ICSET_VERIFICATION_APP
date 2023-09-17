@@ -3,45 +3,111 @@ import { Box, Text, Heading, VStack, FormControl, Input, Link, Button, HStack, C
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import axios from "axios";
-import { insert_login } from "../../database/Insertion";
-import { CheckLoginTable } from "../../database/CheckTableSize";
+import { insert_login ,insertRegistredUserTable ,insertIbmTable,insertGoogleTable} from "../../database/Insertion";
+import { CheckLoginTable ,CheckRegTable,CheckIBMTable, CheckGoogleTable} from "../../database/CheckTableSize";
 const Login = () => {
     const navigation =useNavigation();
     const [userId , setUserId] = useState('');
     const [password , setPassword] = useState('');
 
 
-    const handle_Authentication=()=>{
-      // console.log(`login success${userId}"  " ${password}`);
-      var k;
-
-      axios.post('http://65.2.137.105:3000/login',{
-        userid:userId,password:password
-      })
-      .then((res)=>{
-        const auth = res.data;
+    const handle_Authentication = async () => {
+      try {
+        // Make the POST request to the authentication endpoint
+        const response = await axios.post('http://65.2.172.47/login', {
+          userid: userId,
+          password: password
+        });
+    
+        const auth = response.data;
         const id = auth.user;
         console.log(auth);
-        if(auth.authenticate_status === true){
-          console.log("iiiiiidddddd",id);
-          insert_login(id);
-          alert(auth.message);
+    
+        if (auth.authenticate_status === true) {
+          console.log("iiiiiidddddd", id);
+    
+          // Execute these functions in order using await
+          await insert_login(id);
+          await load_All_Data_And_Navigate();
+          await IBM_data_load();
+          await load_google_data();
           setUserId('');
           setPassword('');
+          alert(auth.message);
           navigateToSelectRole();
-        }
-        else{
+        } else {
           alert(auth.message);
         }
-      })
-      .catch((error)=>{
-        console.log("error",error);
-      })
+      } catch (error) {
+        console.error("Error", error);
+      }
+    };
+    
 
-const navigateToSelectRole=()=>{
-  navigation.navigate("selectRole")
-}
+  const navigateToSelectRole=()=>{
+    navigation.replace("selectRole")
+  }
+  const load_All_Data_And_Navigate = async () => {
+    try {
+      // Check the table row count
+      const c = await CheckRegTable();
+
+      console.log('reg data count ===', c);
+
+      if (c === 0) {
+        const response = await axios.get(`http://65.2.172.47/users`);
+        const userData = response.data;
+        await insertRegistredUserTable(userData);
+      }
+
+      // Continue with other actions or navigation
+      // navigateToReception();
+    } catch (error) {
+      console.error('Error:', error);
     }
+  };
+
+  const IBM_data_load = async () => {
+    try {
+      // Check the table row count
+      const c1 = await CheckIBMTable();
+
+      console.log('IBM data count ===', c1);
+
+      if (c1 === 0) {
+        const response = await axios.get(`http://65.2.172.47/ibm`);
+        const ibmData = response.data;
+        await insertIbmTable(ibmData);
+      }
+
+      // Continue with other actions
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  const load_google_data = async () => {
+    try {
+      // Check the table row count
+      const c2 = await CheckGoogleTable();
+
+      console.log('Google data count ===', c2);
+
+      if (c2 === 0) {
+        const response = await axios.get(`http://65.2.172.47/google`);
+        const googleData = response.data;
+        await insertGoogleTable(googleData);
+      }
+
+      // Continue with other actions or navigation
+      // navigateToGoogle();
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+
+
   return (
     <NativeBaseProvider>
       <Center w="100%">
