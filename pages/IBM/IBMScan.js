@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native";
-import { View,Text ,StyleSheet,} from "react-native";
+import { View,Text ,StyleSheet,Image} from "react-native";
 import { Button } from 'react-native-paper';
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -59,15 +59,13 @@ function offlineDataCountReception(){
               <View style={styles.ViewCount}>
                 <Text style={styles.networkText}>Offline Verified Count :{offlinCount}</Text>
               </View>
-            {/* {status === 'Offline' &&(
-            <View style={styles.synButtonView}>
-              <Button mode="contained" style={styles.synButton} textColor='#000'
-                      onPress={syncOffline_dataToMongo} 
-                  >
-                      Sync
-                  </Button>
-              </View>
-              )} */}
+            <View style={styles.ibmView}>
+            <Image 
+                    source={require('../../assets/ibm1.png')}
+                    style={styles.imgIBM}
+                    resizeMode='contain'
+                />
+            </View>
            
             <View style={styles.btnContainer}>
               <TouchableOpacity onPress={()=>{navigation.navigate("ibmqr")}}>
@@ -105,6 +103,7 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         borderRadius:70,
         alignItems:'center',
+        marginBottom:20
     },
     btnContainer:{
         margin:20,
@@ -115,7 +114,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         bottom: 0,
         position: 'absolute',
-        marginBottom: 30,
+        marginBottom: 20,
         flexDirection: 'row',
         alignItems: 'center'
     },
@@ -156,5 +155,12 @@ const styles = StyleSheet.create({
         paddingVertical:20,
     
       },
+      ibmView:{
+        alignSelf:'center',
+      },
+      imgIBM:{
+        height:'30%'
+      }
+
     
 })

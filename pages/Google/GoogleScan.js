@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native";
-import { View,Text ,StyleSheet,} from "react-native";
+import { View,Text ,StyleSheet,Image} from "react-native";
 import { Button } from 'react-native-paper';
 import { SafeAreaView } from "react-native-safe-area-context";
 import axios from "axios";
@@ -57,6 +57,13 @@ function offlineDataCountGoogle(){
               <View style={styles.ViewCount}>
                 <Text style={styles.networkText}>Offline Verified Count :{offlinCount}</Text>
               </View>
+            <View style={styles.imageGoogle}>
+              <Image 
+                      source={require('../../assets/ggg.png')}
+                      style={styles.imgGoogle}
+                      resizeMode='contain'
+                  />
+            </View>
            
             <View style={styles.btnContainer}>
               <TouchableOpacity  onPress={()=>{navigation.navigate("googleqr")}}>
@@ -94,6 +101,7 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         borderRadius:70,
         alignItems:'center',
+        marginBottom:40,
     },
     btnContainer:{
         margin:20,
@@ -104,7 +112,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         bottom: 0,
         position: 'absolute',
-        marginBottom: 30,
+        marginBottom: 20,
         flexDirection: 'row',
         alignItems: 'center'
     },
@@ -117,17 +125,6 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         color: '#fff'
     },
-    synButtonView:{
-        alignSelf:'center',
-        padding:10,
-       
-      },
-      synButton:{
-        backgroundColor:'#ffff',
-        marginTop:20,
-        
-    
-      },
       ViewNetwork :{
         alignSelf:'center',
         position:'absolute',
@@ -145,5 +142,13 @@ const styles = StyleSheet.create({
         paddingVertical:20,
     
       },
+      imageGoogle:{
+        alignSelf:'center',
+        
+      },
+      imgGoogle:{
+          height:'40%',
+      }
+     
     
 })
